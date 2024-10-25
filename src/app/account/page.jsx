@@ -1,6 +1,7 @@
 "use client";
 import React, { useContext } from "react";
 import { AuthContext } from "@/context/auth";
+import LoginComponent from "@/components/login-component";
  
 const LoadingSpinner = () => (
   <div className="flex min-h-screen items-center justify-center">
@@ -17,8 +18,9 @@ const Page = () => {
 
   return (
     <div className="">
-      {JSON.stringify(user)}
-      <button onClick={handleLogout}>Logout</button>
+      <LoginComponent 
+      name={user.name}
+      email={user.email}/>
     </div>
   );
 };
