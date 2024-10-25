@@ -58,6 +58,7 @@ export async function checkLoggedIn() {
 export async function logout() {
   try {
     await account.deleteSession("current");
+    
   } catch (error) {
     // Handle specific logout errors
     if (error?.code === 401) {
