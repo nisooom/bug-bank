@@ -11,7 +11,7 @@ export const PriorityBugCard = ({ count }) => {
       </div>
       <div className="flex flex-col justify-center">
         <div className="text-3xl font-bold">{count}</div>
-        <div className="text-xl font-medium">
+        <div className="text-lg font-medium">
           High Priority Bugs
         </div>
       </div>

@@ -37,8 +37,8 @@ export async function loginWithGoogle() {
 export async function checkLoggedIn() {
   try {
     const user = await account.get();
-    
-    console.log(user);
+
+    // console.log(user);
     return user;
   } catch (error) {
     // Handle specific error cases

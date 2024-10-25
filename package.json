@@ -11,6 +11,7 @@
   "dependencies": {
     "@tanstack/react-query": "4",
     "@tanstack/react-query-devtools": "^4.36.1",
+    "@uploadthing/react": "^7.1.0",
     "appwrite": "^16.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -19,10 +20,13 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^7.2.0"
   },
   "devDependencies": {
     "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.1"
   }
 }

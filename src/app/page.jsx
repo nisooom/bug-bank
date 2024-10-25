@@ -34,7 +34,7 @@ const Page = () => {
         <div className="w-full sm:h-28 h-72 flex flex-col sm:flex-row gap-2 bg-cyan-400 p-4">
           <OpenBugCard count={249} />
           <ClosedBugCard count={123} />
-          <PriorityBugCard count={2311} />
+          <PriorityBugCard count={211} />
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+// import "@uploadthing/react/styles.css";
+
 import NavbarWrapper from "@/components/navbar";
 import { ReactQueryClientProvider } from "@/providers/react-query";
 import { AuthProvider } from "@/providers/auth";
