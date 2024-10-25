@@ -10,14 +10,14 @@ import { AuthContext } from "@/context/auth";
 const Navbar = () => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
   const router = useRouter();
- 
+
 
   const initials =
     user && user.name
       ? user.name
-          .split(" ")
-          .map((name) => name[0])
-          .join("")
+        .split(" ")
+        .map((name) => name[0])
+        .join("")
       : "";
 
   return (

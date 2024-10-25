@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
             <NavbarWrapper>{children}</NavbarWrapper>
           </AuthProvider>
         </ReactQueryClientProvider>
-        {children}
+       
       </body>
     </html>
   );

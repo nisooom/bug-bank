@@ -4,10 +4,10 @@ import { BugOff } from "lucide-react"
 
 export const BugCard = ({ count, type }) => {
   return (
-    <div className="flex flex-grow bg-background brightness-200 basis-1/3 h-32 rounded-lg gap-1">
+    <div className="flex flex-grow bg-background w-full sm:w-1/3 h-full  rounded-lg gap-2 px-2 py-2">
       <div className="flex items-center justify-center">
         <div
-          className={`aspect-square ml-4 mr-4 w-24 flex items-center justify-center ${
+          className={`aspect-square rounded-md h-full flex items-center justify-center ${
             type === 'open' ?
             "bg-blue-600" :
             type === 'close' ?
@@ -29,8 +29,8 @@ export const BugCard = ({ count, type }) => {
         </div>
       </div>
       <div className="flex flex-col justify-center">
-        <div className="text-3xl font-semibold">{count}</div>
-        <div className="text-2xl">
+        <div className="text-3xl font-bold">{count}</div>
+        <div className="text-xl font-medium">
         {
             type === 'open' ?
             "Open Bugs" :
