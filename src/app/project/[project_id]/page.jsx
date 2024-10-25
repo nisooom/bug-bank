@@ -5,6 +5,25 @@ import { PriorityBugCard } from "@/components/bug-cards/priority-bugs"
 import { useEffect, useState } from "react"
 import { Code2 } from "lucide-react"
 import { ArrowBigDown } from "lucide-react"
+import { Search } from "lucide-react"
+import { Circle } from "lucide-react"
+
+
+const getProject = (projectId) => {
+  return {
+    title: `Project title {id: ${projectId}}`,
+    bugsOpened: 123,
+    bugsClosed: 1,
+    priorityBugs: 3121,
+    projectId: "project-id-lol",
+    apiKey: "secret-key-lol",
+    bugs: new Array(10).fill(0).map((_, i) => ({
+      title: `Bug ${i}`,
+      description: `Bug description bug ${i}`,
+      priority: i % 3 === 0 ? "Low" : i % 3 === 1 ? "Medium" : "High",
+    }))
+  }
+}
 
 
 export default function Page({ params }) {
@@ -14,31 +33,8 @@ export default function Page({ params }) {
   const [secretToggle, setSecretToggle] = useState(false)
 
   const init = () => {
-    setData({
-      title: `Project title {id: ${params.project_id}}`,
-      bugsOpened: 123,
-      bugsClosed: 1,
-      priorityBugs: 3121,
-      projectId: "project-id-lol",
-      apiKey: "secret-key-lol",
-      bugs: [
-        {
-          priority: "High",
-          title: "Bug 1",
-          description: "Bug 1 description",
-        },
-        {
-          priority: "Low",
-          title: "Bug 2",
-          description: "Bug 2 description",
-        },
-        {
-          priority: "Medium",
-          title: "Bug 3",
-          description: "Bug 3 description",
-        },
-      ]
-    })
+    const project = getProject(params.project_id)
+    setData(project)
   }
 
   useEffect(() => {
@@ -100,6 +96,31 @@ export default function Page({ params }) {
                 </div>
               </div>
             }
+          </div>
+          <div className="mt-16 rounded-lg gap-2 px-4 py-3 mx-4 bg-background brightness-200">
+            <div className="flex gap-2">
+              <div className="w-1/12 flex items-center justify-center">
+                <Search size={32} />
+              </div>
+              <input type="text" placeholder="Search Bugs" className="w-full px-4 py-3 text-2xl rounded-lg bg-background brightness-150" />
+              <button className="text-4xl w-2/12 bg-secondary rounded-lg">Sort By</button>
+            </div>
+            <div className="mt-4 grid grid-cols-4 gap-4">
+              {
+                data.bugs.map((bug, index) => (
+                  <button key={index} className="bg-background brightness-200 p-4 rounded-lg">
+                    <div className="w-min bg-background brightness-200 rounded-xl">
+                      <div className="flex items-center justify-center px-3 py-1 gap-2 mb-1">
+                        <Circle size={20} fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`} />
+                        {bug.priority}
+                      </div>
+                    </div>
+                    <div className="text-left text-2xl">{bug.title}</div>
+                    <div className="text-left text-lg text-slate-700">{bug.description}</div>
+                  </button>
+                ))
+              }
+            </div>
           </div>
         </div>
       </>
