@@ -37,6 +37,7 @@ export async function loginWithGoogle() {
 export async function checkLoggedIn() {
   try {
     const user = await account.get();
+    
     console.log(user);
     return user;
   } catch (error) {

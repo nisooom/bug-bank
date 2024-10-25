@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext } from "react";
 import { AuthContext } from "@/context/auth";
-
+ 
 const LoadingSpinner = () => (
   <div className="flex min-h-screen items-center justify-center">
     <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-primary"></div>
@@ -18,6 +18,7 @@ const Page = () => {
   return (
     <div className="">
       {JSON.stringify(user)}
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };

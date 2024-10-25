@@ -2,26 +2,15 @@
 import { checkLoggedIn } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useContext } from "react";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import { AuthContext } from "@/context/auth";
 const Navbar = () => {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isAuthenticated, loading } = useContext(AuthContext);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const loggedInUser = await checkLoggedIn();
-      if (!loggedInUser) {
-        router.push("/signup");
-      } else {
-        setUser(loggedInUser);
-      }
-      setIsLoading(false);
-    };
-    fetchUser();
-  }, [router]);
+ 
 
   const initials =
     user && user.name
@@ -32,6 +21,13 @@ const Navbar = () => {
       : "";
 
   return (
+    // <div className="
+    // ">
+    //   {
+    //     loading?(<>Loading...</>):
+    //     user?(<>Sign out</>):(<>Signin</>)
+    //   }
+    // </div>
     <div className="absolute flex h-14 w-full items-center justify-between border-b-[1.5px] border-tertiary px-4 text-white">
       <Link
         href="/"
@@ -47,11 +43,11 @@ const Navbar = () => {
         /> */}
         Bug Bank
       </Link>
-      {isLoading ? (
+      {loading ? (
         <div className="flex items-center gap-2">
           <span>Loading...</span>
         </div>
-      ) : user === null ? (
+      ) : user ? (
         <Link
           href="/account"
           className="flex aspect-square h-2/3 items-center justify-center gap-4 rounded-full bg-accent/25"
@@ -61,7 +57,7 @@ const Navbar = () => {
       ) : (
         <Link
           href="/signup"
-          className="flex items-center gap-2 rounded border-[1.5px] border-accent/15 px-2 py-1"
+          className="flex items-center gap-2 rounded border-[1.5px] border-accent/15 px-2 py-1 text-white"
         >
           Sign in
         </Link>
