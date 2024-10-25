@@ -12,10 +12,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     IsMounted(true);
     const fetchUser = async () => {
-      const { user, error } = await checkLoggedIn();
-      if (error) {
-        console.error(error);
-      }
+      const user = await checkLoggedIn();
+      
       
       setUser(user);
       setLoading(false);
