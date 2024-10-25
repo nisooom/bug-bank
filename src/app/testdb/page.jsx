@@ -3,9 +3,9 @@ import React from 'react'
 import { GetDocumentAndSendToLlama } from '@/actions/llama';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { getBugsFromAPI } from '@/lib/db/getReports';
 
 
-const [data, setData] = useState(null); 
 
 export const Page = () => {
 
@@ -13,23 +13,27 @@ export const Page = () => {
         try {
             const response = await GetDocumentAndSendToLlama("671be83f001d7975b1c6");
             console.log(response);
-            setData(response.response)
         } catch (error) {
             console.error('Error sending document to LLAMA:', error);
         }
   
     }
+
+    async function getBugs() {
+        const response = await getBugsFromAPI("sdfjkljsdfsdjfioefiefpuwer897389u3428hfeiwhr783fy4fj8of4u94fu984");
+        console.log(response);
+    }
+
     return (
 
 
     <div className=""> 
         <h1>Testdb</h1>
 
-        <button onClick={handleClick}>Send Document to LLAMA</button>    
+        <button onClick={getBugs}>Get Bugs</button>    
         
-        <div className="">
-            {JSON.stringify(data)}
-        </div>
+
+
 
     </div>
 
