@@ -1,4 +1,6 @@
 import { Client, Account, OAuthProvider } from "appwrite";
+import { AuthContext } from "@/context/auth";
+import { useContext } from "react";
 
 
 const client = new Client()
@@ -6,7 +8,6 @@ const client = new Client()
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT ?? "");
 
 const account = new Account(client);
-
 
 export async function loginWithGoogle() {
   const successUrl = new URL(
@@ -23,8 +24,8 @@ export async function loginWithGoogle() {
       OAuthProvider.Google,
       successUrl,
       failureUrl,
-      ["repo", "user"],
     );
+
   } catch (error) {
     console.error("GitHub OAuth error:", error);
     throw new Error("Failed to initiate GitHub login");
@@ -35,7 +36,8 @@ export async function loginWithGoogle() {
 export async function checkLoggedIn() {
   try {
     const user = await account.get();
-    return { user };
+
+    return { user, error: null };
   } catch (error) {
     // Handle specific error cases
     if (error?.code === 401) {

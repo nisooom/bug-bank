@@ -7,19 +7,23 @@ import { AuthContext } from "@/context/auth";
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, IsMounted] = useState(false);
 
   useEffect(() => {
+    IsMounted(true);
     const fetchUser = async () => {
       const { user, error } = await checkLoggedIn();
       if (error) {
         console.error(error);
       }
+      
       setUser(user);
       setLoading(false);
+
     };
 
     fetchUser();
-  }, []);
+  }, [mounted]);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading }}>
