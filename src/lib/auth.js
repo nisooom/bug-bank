@@ -25,6 +25,7 @@ export async function loginWithGoogle() {
       successUrl,
       failureUrl,
     );
+    
 
   } catch (error) {
     console.error("GitHub OAuth error:", error);
@@ -36,8 +37,8 @@ export async function loginWithGoogle() {
 export async function checkLoggedIn() {
   try {
     const user = await account.get();
-
-    return { user, error: null };
+    console.log(user);
+    return user;
   } catch (error) {
     // Handle specific error cases
     if (error?.code === 401) {
