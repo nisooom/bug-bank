@@ -10,6 +10,8 @@ const LoginComponent = ({ name, email }) => {
     const router = useRouter();
     const { handleLogout } = useContext(AuthContext);
 
+    // if no user redirect home page
+
     const doSignOut = async () => {
         try {
             await handleLogout(); // Call the logout function
@@ -19,6 +21,8 @@ const LoginComponent = ({ name, email }) => {
             console.error("Error signing out:", error);
         }
     };
+
+    
 
     return (
         <div className="flex justify-center items-center h-screen">
@@ -30,7 +34,12 @@ const LoginComponent = ({ name, email }) => {
                     <CardDescription>{email}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button onClick={doSignOut}>Sign Out</Button>
+                    <Button 
+                        onClick={doSignOut} 
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Sign Out
+                    </Button>
                 </CardContent>
             </Card>
         </div>
