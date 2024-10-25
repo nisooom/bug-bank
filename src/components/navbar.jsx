@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { checkLoggedIn } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,13 +11,12 @@ const Navbar = () => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
   const router = useRouter();
 
-
   const initials =
     user && user.name
       ? user.name
-        .split(" ")
-        .map((name) => name[0])
-        .join("")
+          .split(" ")
+          .map((name) => name[0])
+          .join("")
       : "";
 
   return (
@@ -28,11 +27,11 @@ const Navbar = () => {
     //     user?(<>Sign out</>):(<>Signin</>)
     //   }
     // </div>
-    <div className="absolute flex h-14 w-full items-center justify-between border-b-[1.5px] border-tertiary px-4 text-white">
+    <div className="text-accen15 absolute flex h-14 w-full items-center justify-between border-b-[1.5px] border-white/15 px-4">
       <Link
         href="/"
         type="button"
-        className="flex h-auto items-center justify-center gap-1 rounded border-[1.5px] border-accent/15 bg-secondary px-2 py-1 text-lg font-semibold"
+        className="flex h-auto items-center justify-center gap-1 rounded border-[1.5px] border-accent/15 px-2 py-1 text-lg font-semibold"
       >
         {/* <Image
           src="./gitknit.svg"
@@ -41,7 +40,7 @@ const Navbar = () => {
           height={48}
           className="aspect-square w-7"
         /> */}
-        Bug Bank
+        BugBank
       </Link>
       {loading ? (
         <div className="flex items-center gap-2">
@@ -66,7 +65,6 @@ const Navbar = () => {
   );
 };
 
-
 const NavbarWrapper = ({ children }) => {
   return (
     <div className="flex h-screen w-full flex-col">
@@ -75,6 +73,5 @@ const NavbarWrapper = ({ children }) => {
     </div>
   );
 };
-
 
 export default NavbarWrapper;
