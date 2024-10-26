@@ -14,21 +14,25 @@ const Page = () => {
         title: "Project Uno",
         bugsOpened: 123,
         bugsClosed: 1,
+        id: "project-uno",
       },
       {
         title: "Project Numero 2",
         bugsOpened: 331,
         bugsClosed: 2301,
+        id: "project-dos",
       },
       {
         title: "Project idk",
         bugsOpened: 123,
         bugsClosed: 1,
+        id: "project-idk",
       },
       {
         title: "Project 4",
         bugsOpened: 123,
         bugsClosed: 1,
+        id: "project-4",
       },
     ]);
   }, []);

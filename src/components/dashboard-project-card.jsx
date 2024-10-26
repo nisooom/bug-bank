@@ -1,19 +1,30 @@
-import { Album } from 'lucide-react'
-
+import { Album } from "lucide-react";
+import Link from "next/link";
 export const ProjectCard = ({ project }) => {
   return (
-    <div className="flex bg-background brightness-200 basis-1/4 gap-2 h-24 rounded-lg p-2">
+    <Link
+      className="flex h-24 basis-1/4 gap-2 rounded-lg bg-background p-2 brightness-200"
+      href={`/project/${project.id}`}
+    >
       <div className="flex items-center justify-center">
-        <div className="aspect-square rounded-md h-full flex items-center justify-center bg-blue-900">
+        <div className="flex aspect-square h-full items-center justify-center rounded-md bg-blue-900">
           <Album size={48} />
         </div>
       </div>
       <div className="flex flex-col justify-center gap-1 overflow-hidden">
-        <div className="text-xl font-semibold h-1/3 overflow-hidden text-ellipsis whitespace-nowrap">{project.title}</div>
-        <div className="w-full h-2/3 text">  <div className="text-sm   overflow-hidden text-ellipsis whitespace-nowrap">{project.bugsOpened} bugs opened</div>
-        <div className="text-sm  overflow-hidden text-ellipsis whitespace-nowrap">{project.bugsClosed} bugs closed</div></div>
-      
+        <div className="h-1/3 overflow-hidden text-ellipsis whitespace-nowrap text-xl font-semibold">
+          {project.title}
+        </div>
+        <div className="text h-2/3 w-full">
+          {" "}
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+            {project.bugsOpened} bugs opened
+          </div>
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+            {project.bugsClosed} bugs closed
+          </div>
+        </div>
       </div>
-    </div>
-  )
-}
+    </Link>
+  );
+};
