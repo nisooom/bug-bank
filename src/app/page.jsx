@@ -16,27 +16,27 @@ const Page = () => {
   useEffect(() => {
     setProjects([
       {
-        title: "Project Uno",
-        bugsOpened: 123,
+        title: "Custom QR Code",
+        bugsOpened: 3,
         bugsClosed: 1,
         id: "project-uno",
       },
       {
-        title: "Project Numero 2",
-        bugsOpened: 331,
-        bugsClosed: 2301,
+        title: "Personalised News Feed",
+        bugsOpened: 8,
+        bugsClosed: 6,
         id: "project-dos",
       },
       {
-        title: "Project idk",
-        bugsOpened: 123,
-        bugsClosed: 1,
+        title: "PSP Emulator",
+        bugsOpened: 43,
+        bugsClosed: 36,
         id: "project-idk",
       },
       {
-        title: "Project 4",
-        bugsOpened: 123,
-        bugsClosed: 1,
+        title: "Clothes Tracker",
+        bugsOpened: 5,
+        bugsClosed: 5,
         id: "project-4",
       },
     ]);
