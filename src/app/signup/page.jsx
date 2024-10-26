@@ -6,14 +6,7 @@ import Google from "@/components/icons/Google";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
-
-  useEffect(() => {
-    if (error) {
-      setErrorMessage(decodeURIComponent(error));
-    }
-  }, [error]);
+  
 
   return (
     <div className="flex min-h-full items-center justify-center">

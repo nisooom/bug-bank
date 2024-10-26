@@ -83,7 +83,7 @@ export default function Page({ params }) {
         description,
       });
 
-      setAISummary(response);
+      setAISummary(response.response);
       // remove \n and *
       console.log("response", response);
       const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
@@ -268,14 +268,14 @@ export default function Page({ params }) {
                       <Button
                         className="w-full rounded-md bg-accent text-white hover:bg-secondary"
                         onClick={() =>
-                          // handleLamma({
-                          //   title: bug.title,
-                          //   description: bug.description,
-                          // })
-                          handleLammaLocal({
+                          handleLamma({
                             title: bug.title,
                             description: bug.description,
                           })
+                          // handleLammaLocal({
+                          //   title: bug.title,
+                          //   description: bug.description,
+                          // })
                         }
                       >
                         Ask AI
