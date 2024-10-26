@@ -31,10 +31,9 @@ const LoginComponent = ({ name, email }) => {
     <div className="flex h-full items-start justify-center bg-background py-24">
       <Card className="w-80 border-white/15 bg-background text-white">
         <CardHeader>
-          <CardTitle>Name</CardTitle>
-          <CardDescription>{name}</CardDescription>
-          <CardTitle>Email</CardTitle>
-          <CardDescription>{email}</CardDescription>
+          <CardDescription>Name</CardDescription>
+          <CardTitle>{name}</CardTitle> <CardDescription>Email</CardDescription>
+          <CardTitle>{email}</CardTitle>
         </CardHeader>
         <CardContent>
           <Button

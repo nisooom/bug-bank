@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import { checkLoggedIn } from "@/lib/auth";
 import React, { useState, useEffect } from "react";
 import { AuthContext } from "@/context/auth";
 import { logout } from "@/lib/auth";
 import { addUserToDatabase } from "@/lib/db/addNewUser";
 
-async function addUser(user){
+async function addUser(user) {
   await addUserToDatabase(user);
 }
-
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -30,8 +29,6 @@ export const AuthProvider = ({ children }) => {
       }
       setUser(user);
       setLoading(false);
-      
- 
     };
 
     fetchUser();
@@ -42,7 +39,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading,handleLogout,setIsAuthenticated }}>
+    <AuthContext.Provider
+      value={{ user, setUser, loading, handleLogout, setIsAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );

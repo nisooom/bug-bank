@@ -5,9 +5,20 @@ import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
 import { useEffect, useState } from "react";
 import { Code2 } from "lucide-react";
 import { ArrowBigDown } from "lucide-react";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TalkWithLlamaLocal } from "@/actions/llama";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { TalkWithLlama } from "@/actions/llama";
+import { ItemCardCarousel } from "@/components/item-card-carousel";
 import { Circle } from "lucide-react";
-
+import { GetDocumentAndSendToLlama } from "@/actions/llama";
 const getProject = (projectId) => {
   return {
     title: `Project title {id: ${projectId}}`,
@@ -17,8 +28,8 @@ const getProject = (projectId) => {
     projectId: "project-id-lol",
     apiKey: "secret-key-lol",
     bugs: new Array(10).fill(0).map((_, i) => ({
-      title: `Bug ${i}`,
-      description: `Bug description bug ${i}`,
+      title: `Authorisation not working`,
+      description: `OAuth providers callback urls not working using supabase`,
       priority: i % 3 === 0 ? "Low" : i % 3 === 1 ? "Medium" : "High",
     })),
   };
@@ -31,12 +42,48 @@ export default function Page({ params }) {
   const [secretToggle, setSecretToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("none");
+  const [AISummary, setAISummary] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const init = () => {
     const project = getProject(params.project_id);
     setData(project);
   };
 
+  const handleLamma = async ({ title, description }) => {
+    try {
+      const response = await TalkWithLlama({
+        title,
+        description,
+      });
+
+      setAISummary(response);
+      // remove \n and *
+      console.log("response", response);
+      const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
+      const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
+      setAISummary(cleanedSummary2);
+    } catch (error) {
+      console.error("Error sending document to LLAMA:", error);
+    }
+  };
+
+  const handleLammaLocal = async ({ title, description }) => {
+    setIsLoading(true); // Set loading to true
+    try {
+      const message = `${title} ${description} this is my bug explain it very briefly in less than 40 words`;
+      const response = await TalkWithLlamaLocal({
+        content: message,
+      });
+
+      console.log("response", response);
+      setAISummary(response);
+    } catch (error) {
+      console.error("Error sending document to LLAMA:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false after completion
+    }
+  };
   useEffect(() => {
     init();
   }, []);
@@ -69,7 +116,7 @@ export default function Page({ params }) {
   }, []);
 
   return data === null ? (
-    <div className="text-4xl text-red-500">Loading...</div>
+    <div className="text-md p-8 text-accent/50">Loading...</div>
   ) : (
     <>
       <div className="flex h-full w-full items-center justify-center bg-green-400/0">
@@ -149,27 +196,74 @@ export default function Page({ params }) {
               </div>
               <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {sortedBugs.map((bug, index) => (
-                  <button
-                    key={index}
-                    className="flex flex-col gap-2 rounded-md bg-background p-4 brightness-200"
-                  >
-                    <div className="w-min rounded-md bg-white/5">
-                      <div className="flex items-center justify-center gap-1 px-2 py-1">
-                        <Circle
-                          size={12}
-                          className="rounded-full border-0 stroke-none"
-                          fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`}
-                        />
-                        {bug.priority}
+                  <Dialog>
+                    <DialogTrigger
+                      key={index}
+                      className="flex flex-col gap-2 rounded-md bg-background p-4 brightness-200"
+                    >
+                      <div className="w-min rounded-md bg-white/5">
+                        <div className="flex items-center justify-center gap-1 px-2 py-1">
+                          <Circle
+                            size={12}
+                            className="rounded-full border-0 stroke-none"
+                            fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`}
+                          />
+                          {bug.priority}
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-left text-xl">{bug.title}</div>
-                      <div className="text-left text-sm text-slate-700">
-                        {bug.description}
+                      <div>
+                        <div className="text-left text-xl">{bug.title}</div>
+                        <div className="text-left text-sm text-slate-700">
+                          {bug.description}
+                        </div>
                       </div>
-                    </div>
-                  </button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                          <Circle
+                            size={12}
+                            className="rounded-full border-0 stroke-none"
+                            fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`}
+                          />
+                          {bug.title}
+                        </DialogTitle>
+                        <DialogDescription className="text-left text-slate-500">
+                          {bug.description}
+                        </DialogDescription>
+                      </DialogHeader>
+                      <ItemCardCarousel
+                        items={new Array(3).fill(0).map((_, i) => ({
+                          title: `Image ${i}`,
+                          description: `Image description ${i}`,
+                          imgSrc: `https://picsum.photos/seed/${i}/500/300`,
+                        }))}
+                      />
+                      <Button
+                        className="w-full rounded-md bg-accent text-white hover:bg-secondary"
+                        onClick={() =>
+                          // handleLamma({
+                          //   title: bug.title,
+                          //   description: bug.description,
+                          // })
+                          handleLammaLocal({
+                            title: bug.title,
+                            description: bug.description,
+                          })
+                        }
+                      >
+                        Ask AI
+                      </Button>
+                      {isLoading && (
+                        <div className="text-center text-lg text-gray-500">
+                          Generating summary...
+                        </div>
+                      )}
+                      <div className="text-left text-lg text-slate-500">
+                        {JSON.stringify(AISummary)}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 ))}
               </div>
             </div>
