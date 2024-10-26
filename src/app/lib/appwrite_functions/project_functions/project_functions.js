@@ -13,10 +13,11 @@ function sha256Encrypt(text) {
 const now = new Date();
 
   
-export async function create_new_project(proj_name) {
+export async function create_new_project(proj_name,collaborators) {
     var project_info = {
         project_name: proj_name,
-        api_key: sha256Encrypt(proj_name+now.toString())
+        api_key: sha256Encrypt(proj_name+now.toString()),
+        user_collaborators: collaborators
     };
 
     await databases.createDocument(
