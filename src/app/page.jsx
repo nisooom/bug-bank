@@ -8,6 +8,7 @@ import { PlusCircle } from "lucide-react";
 import { CreateProjectForm } from "@/components/forms/new_project_form";
 
 import { create_new_user } from "./lib/appwrite_functions/user_functions/user_functions.js";
+import { CreateBugReportForm } from "@/components/forms/new_bug_report_form.jsx";
 
 const Page = () => {
   const [projects, setProjects] = useState([]);
@@ -56,6 +57,7 @@ const Page = () => {
             <ProjectCard key={index} project={project} />
           ))}
         </div>
+        <CreateBugReportForm onSubmit={(data) => console.log(data)} />
       </div>
     </div>
   );

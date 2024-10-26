@@ -4,13 +4,13 @@ import { ID } from "appwrite";
 import { databases } from "@/app/appwrite";
 
   
-export async function create_new_bug_report(title, desc, sensitivity, images, status, reportee_email) {
+export async function create_new_bug_report(title, desc, sensitivity, reportee_email, images, status ) { 
     var bug_report = {
         title: title,
         description: desc,
         sensitivity: false,
         image_example: images,
-        status: status,
+        status: status ?? "Pending",
         reportee_email: reportee_email
     };
 
