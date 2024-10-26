@@ -68,8 +68,8 @@ export default function Page({ params }) {
   const [secretToggle, setSecretToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("high");
-  const [AISummary, setAISummary] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [AISummary, setAISummary] = useState("");
 
   const init = () => {
     const project = getProject(params.project_id);
@@ -77,18 +77,18 @@ export default function Page({ params }) {
   };
 
   const handleLamma = async ({ title, description }) => {
+    setIsLoading(true);
     try {
       const response = await TalkWithLlama({
         title,
         description,
       });
-
-      setAISummary(response.response);
-      // remove \n and *
       console.log("response", response);
+      setAISummary(response.response);
       const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
       const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
       setAISummary(cleanedSummary2);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error sending document to LLAMA:", error);
     }
