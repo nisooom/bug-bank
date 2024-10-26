@@ -1,11 +1,17 @@
 "use server";
-import { client } from "../auth";
-import { Databases } from "appwrite";
+import { Client, Databases } from "appwrite";
+import { Query } from "appwrite";
+
+const client = new Client();
+client
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT) // Your API Endpoint
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT) // Your project ID
 
 const databases = new Databases(client);
 
 export async function getBugsFromAPI(apikey) {
   try {
+    console.log(apikey);
     const collectionId = process.env.NEXT_PUBLIC_PROJECT_COLLECTION_ID;
     const response = await databases.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
@@ -13,8 +19,9 @@ export async function getBugsFromAPI(apikey) {
         [
             Query.equal("api_key", apikey)
         ]
-);
+    );
 
+    console.log(response);
     const bugIDs = response.documents[0].bugIds.map(bugId => bugId["$id"]);
 
     console.log(bugIDs);

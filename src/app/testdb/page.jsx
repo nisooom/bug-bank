@@ -4,14 +4,18 @@ import { GetDocumentAndSendToLlama } from '@/actions/llama';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getBugsFromAPI } from '@/lib/db/getReports';
-
+import { getProjectsOfUser } from '@/lib/db/getProjects';
+import { AuthContext } from '@/context/auth';
+import { useContext } from 'react';
 
 
 export const Page = () => {
 
+    const user = useContext(AuthContext);
     const handleClick = async () => {
         try {
-            const response = await GetDocumentAndSendToLlama("671be83f001d7975b1c6");
+            console.log(user.email);
+            const response = await getProjectsOfUser(user.email);
             console.log(response);
         } catch (error) {
             console.error('Error sending document to LLAMA:', error);
@@ -20,7 +24,7 @@ export const Page = () => {
     }
 
     async function getBugs() {
-        const response = await getBugsFromAPI("sdfjkljsdfsdjfioefiefpuwer897389u3428hfeiwhr783fy4fj8of4u94fu984");
+        const response = await getProjectsOfUser;
         console.log(response);
     }
 
@@ -30,7 +34,7 @@ export const Page = () => {
     <div className=""> 
         <h1>Testdb</h1>
 
-        <button onClick={getBugs}>Get Bugs</button>    
+        <button onClick={handleClick}>Get Bugs</button>    
         
 
 
