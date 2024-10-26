@@ -1,4 +1,7 @@
-"use server";
+export const runtime = "edge";
+
+export const region = ["bom1", "hnd1"];
+
 import { Client, Databases } from "appwrite";
 import { ollama } from "ollama-ai-provider";
 import { generateText } from "ai";
