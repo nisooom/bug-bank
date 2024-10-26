@@ -34,7 +34,7 @@ export const Page = () => {
     <div className=""> 
         <h1>Testdb</h1>
 
-        <button onClick={handleClick}>Get Bugs</button>    
+        <button onClick={handleClick}>Get Bugs Bunny</button>    
         
 
 
