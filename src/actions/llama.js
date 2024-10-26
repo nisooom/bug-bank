@@ -36,7 +36,8 @@ export async function GetDocumentAndSendToLlama(docID) {
 
 export async function TalkWithLlama({ title, description }) {
   try {
-    const response = await fetch(`${process.env.LLAMA_URL}`, {
+    
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LLAMA_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
