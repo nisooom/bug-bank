@@ -4,6 +4,10 @@ import { OpenBugCard } from "@/components/bug-cards/opened-bugs";
 import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
 import React, { useEffect, useState } from "react";
 import { ProjectCard } from "@/components/dashboard-project-card";
+import { PlusCircle } from "lucide-react";
+import { CreateProjectForm } from "@/components/forms/new_project_form";
+
+import { create_new_user } from "./lib/appwrite_functions/user_functions/user_functions.js";
 
 const Page = () => {
   const [projects, setProjects] = useState([]);
@@ -37,6 +41,7 @@ const Page = () => {
     ]);
   }, []);
 
+  
   return (
     <div className="flex h-full w-full items-center justify-center bg-green-400/0">
       <div className="h-full w-full max-w-6xl bg-red-400/0 py-4">
@@ -46,9 +51,10 @@ const Page = () => {
           <PriorityBugCard count={211} />
         </div>
 
-        <div className="px-4 pt-6 text-2xl font-bold text-white">
-          Your Projects
-        </div>
+        <div className="flex items-center px-4 pt-6 text-2xl font-bold text-white">
+        Your Projects
+        <CreateProjectForm onSubmit={(data) => console.log(data)} />
+      </div>
         <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} />
@@ -57,6 +63,9 @@ const Page = () => {
       </div>
     </div>
   );
+
 };
+
+
 
 export default Page;
