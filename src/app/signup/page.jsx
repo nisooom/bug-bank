@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { loginWithGoogle } from "@/lib/auth";
-import Google from "@/components/icons/Google";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -25,7 +24,6 @@ export default function SignUpPage() {
             type="submit"
             className="border-tertiary items-centerborder-secondary mt-4 flex w-full justify-start gap-2 rounded-md border-[1.5px] border-secondary bg-background px-4 py-2 text-lg font-medium text-white transition-colors hover:border-accent/50 hover:bg-foreground/80 focus:outline-none focus:ring-2 focus:ring-accent"
           >
-            <Google size={24} className="mr-2 inline-block text-accent" />
             Sign up with Google
           </button>
         </form>
