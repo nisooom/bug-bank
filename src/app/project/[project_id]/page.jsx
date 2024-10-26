@@ -67,7 +67,7 @@ export default function Page({ params }) {
   const [devOptExpanded, setDevOptExanded] = useState(false);
   const [secretToggle, setSecretToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("none");
+  const [sortOrder, setSortOrder] = useState("high");
   const [AISummary, setAISummary] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -214,6 +214,7 @@ export default function Page({ params }) {
                 />
                 <select
                   className="rounded-sm bg-secondary px-2 text-lg"
+                  value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
                 >
                   <option value="low">Priority Low</option>
