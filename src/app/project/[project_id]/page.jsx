@@ -20,6 +20,32 @@ import { ItemCardCarousel } from "@/components/item-card-carousel";
 import { Circle } from "lucide-react";
 import { GetDocumentAndSendToLlama } from "@/actions/llama";
 const getProject = (projectId) => {
+  const bugTitles = [
+    "Authorization not working",
+    "User unable to reset password",
+    "Dashboard loading slowly",
+    "API response time is high",
+    "Data not saving correctly",
+    "Mobile view issues",
+    "Email notifications not sent",
+    "Search functionality broken",
+    "Payment gateway errors",
+    "User profile not updating",
+  ];
+
+  const bugDescriptions = [
+    "OAuth providers callback URLs not working using Supabase.",
+    "Users report that they cannot reset their passwords via email.",
+    "The dashboard takes too long to load on various devices.",
+    "API calls are taking longer than expected, affecting user experience.",
+    "User data fails to save intermittently, causing confusion.",
+    "The mobile view does not display correctly on certain devices.",
+    "Users are not receiving email notifications for important updates.",
+    "The search feature returns no results even for valid queries.",
+    "Errors occur when trying to process payments through the gateway.",
+    "Changes made to user profiles are not reflected in the app.",
+  ];
+
   return {
     title: `Project title {id: ${projectId}}`,
     bugsOpened: 123,
@@ -27,9 +53,9 @@ const getProject = (projectId) => {
     priorityBugs: 3121,
     projectId: "project-id-lol",
     apiKey: "secret-key-lol",
-    bugs: new Array(10).fill(0).map((_, i) => ({
-      title: `Authorisation not working`,
-      description: `OAuth providers callback urls not working using supabase`,
+    bugs: bugTitles.map((title, i) => ({
+      title,
+      description: bugDescriptions[i % bugDescriptions.length],
       priority: i % 3 === 0 ? "Low" : i % 3 === 1 ? "Medium" : "High",
     })),
   };
