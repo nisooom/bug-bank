@@ -23,15 +23,7 @@ const Page = () => {
             <Button onClick={handleGetProjects}>Get Projects</Button>
             {/* Optionally render the projects */}
             <div>
-                {projects.length > 0 ? (
-                    <ul>
-                        {projects.map((project, index) => (
-                            <li key={index}>{project.name}</li> // Adjust based on your project structure
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No projects found.</p>
-                )}
+                {JSON.stringify(projects)}
             </div>
         </div>
     );

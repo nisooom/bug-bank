@@ -6,41 +6,33 @@ import React, { useEffect, useState } from "react";
 import { ProjectCard } from "@/components/dashboard-project-card";
 import { PlusCircle } from "lucide-react";
 import { CreateProjectForm } from "@/components/forms/project-form.jsx";
-
+import { getProjects } from "@/lib/db/getProject";
 // import { create_new_user } from "./lib/appwrite_functions/user_functions/user_functions.js";
 import { CreateBugReportForm } from "@/components/forms/bug-form.jsx";
+import { AuthContext } from "@/context/auth";
+import { useContext } from "react";
+
 
 const Page = () => {
   const [projects, setProjects] = useState([]);
 
+  const { user } = useContext(AuthContext);
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
-    setProjects([
-      {
-        title: "Custom QR Code",
-        bugsOpened: 3,
-        bugsClosed: 1,
-        id: "project-uno",
-      },
-      {
-        title: "Personalised News Feed",
-        bugsOpened: 8,
-        bugsClosed: 6,
-        id: "project-dos",
-      },
-      {
-        title: "PSP Emulator",
-        bugsOpened: 43,
-        bugsClosed: 36,
-        id: "project-idk",
-      },
-      {
-        title: "Clothes Tracker",
-        bugsOpened: 5,
-        bugsClosed: 5,
-        id: "project-4",
-      },
-    ]);
-  }, []);
+    setIsMounted(true);
+    if (isMounted) {
+      getProjects({ email: "shahnishumbh55@gmail.com" }).then((projects) => {
+        setProjects(projects);
+      });
+    }
+    return () => {
+      setIsMounted(false);
+    };
+  }, [isMounted]);
+
+
+  
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-green-400/0">
