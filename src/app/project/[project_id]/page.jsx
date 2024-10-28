@@ -3,6 +3,7 @@ import { ClosedBugCard } from "@/components/bug-cards/closed-bugs";
 import { OpenBugCard } from "@/components/bug-cards/opened-bugs";
 import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
 import { useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { Code2 } from "lucide-react";
 import { ArrowBigDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -164,7 +165,7 @@ export default function Page({ params }) {
                     <Code2 size={24} />
                     <div className="px-4 text-2xl">Developer settings</div>
                   </div>
-                  <ArrowBigDown
+                  <ChevronDown
                     size={24}
                     className={`transition-transform duration-300 ${devOptExpanded ? "rotate-180" : ""}`}
                   />
@@ -213,7 +214,7 @@ export default function Page({ params }) {
                   className="w-full rounded-sm bg-background px-2 py-1 text-lg brightness-150"
                 />
                 <select
-                  className="rounded-sm bg-secondary px-2 text-lg"
+                  className="px-0text-lg rounded-sm bg-secondary"
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
                 >
@@ -268,11 +269,12 @@ export default function Page({ params }) {
                       />
                       <Button
                         className="w-full rounded-md bg-accent text-white hover:bg-secondary"
-                        onClick={() =>
-                          handleLamma({
-                            title: bug.title,
-                            description: bug.description,
-                          })
+                        onClick={
+                          () =>
+                            handleLamma({
+                              title: bug.title,
+                              description: bug.description,
+                            })
                           // handleLammaLocal({
                           //   title: bug.title,
                           //   description: bug.description,

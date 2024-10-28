@@ -1,32 +1,93 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { loginWithGoogle } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState(null);
-  
+  const searchParams = useSearchParams();
+
+  const handleGoogleSignUp = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (error) {
+      setErrorMessage("An error occurred during sign up. Please try again.");
+    }
+  };
 
   return (
-    <div className="flex min-h-full items-center justify-center">
-      <div className="border-tertiary flex w-full max-w-sm flex-col rounded-lg border-[1.5px] border-white/15 bg-background px-4 pb-8 pt-4 shadow-md">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8 rounded-xl border border-white/10 bg-white/10 p-8 shadow-2xl">
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-foreground">
+            Create an account
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Or{" "}
+            <a
+              href="/signin"
+              className="font-medium text-primary hover:text-primary/80"
+            >
+              sign in to your existing account
+            </a>
+          </p>
+        </div>
+
         {errorMessage && (
-          <div className="mb-4 rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800">
-            {errorMessage}
-          </div>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
         )}
 
-        <span className="w-full items-center justify-center text-center text-xl font-bold text-gray-300">
-          Sign in to Google
-        </span>
-        <form action={loginWithGoogle} className=" ">
-          <button
-            type="submit"
-            className="border-tertiary items-centerborder-secondary mt-4 flex w-full justify-start gap-2 rounded-md border-[1.5px] border-secondary bg-background px-4 py-2 text-lg font-medium text-white transition-colors hover:border-accent/50 hover:bg-foreground/80 focus:outline-none focus:ring-2 focus:ring-accent"
+        <div className="mt-8">
+          <Button
+            onClick={handleGoogleSignUp}
+            className="w-full bg-white text-gray-900 hover:bg-gray-100"
           >
+            <svg
+              className="mr-2 h-4 w-4"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fab"
+              data-icon="google"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 488 512"
+            >
+              <path
+                fill="currentColor"
+                d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+              ></path>
+            </svg>
             Sign up with Google
-          </button>
-        </form>
+          </Button>
+        </div>
+
+        <div className="mt-6">
+          <p className="text-center text-sm text-muted-foreground">
+            By signing up, you agree to our{" "}
+            <a
+              href="/terms"
+              className="font-medium text-primary hover:text-primary/80"
+            >
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a
+              href="/privacy"
+              className="font-medium text-primary hover:text-primary/80"
+            >
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </div>
   );
