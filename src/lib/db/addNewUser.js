@@ -1,11 +1,8 @@
 "use server";
-import {client} from "@/lib/auth";
 
-import { Databases } from "appwrite";
-import { Query } from "appwrite";
+import { client, databases } from "@/lib/db/appwrite";
 import { ID } from "appwrite";
-
-const databases = new Databases(client);
+import { Query } from "appwrite";
 
 export async function addUserToDatabase(user) {
     
@@ -14,7 +11,7 @@ export async function addUserToDatabase(user) {
 
     try {
 
-        console.log(user.email);
+        //console.log(user.email);
         // if not exists
         // create new document
         const check = await databases.listDocuments(
@@ -24,28 +21,28 @@ export async function addUserToDatabase(user) {
                 Query.equal("user_email", user.email)
             ]
         );
-        console.log(check);
+        //console.log(check);
         
         if (check.total > 0){
-            console.log("User already exists in database");
+            //console.log("User already exists in database");
             return;
         }else{
-            console.log("Trying to add new user");
-            console.log(ID.unique());
-            console.log(user);
+            //console.log("Trying to add new user");
+            //console.log(ID.unique());
+            //console.log(user);
             var user_entry = {
                 username: name,
                 user_email: email,
             };
             const uniqueID = ID.unique();
-            console.log(uniqueID);
+            //console.log(uniqueID);
             const response = await databases.createDocument(
                 process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
                 process.env.NEXT_PUBLIC_USER_COLLECTION_ID,
                 uniqueID,
                 user_entry
             );
-            console.log("User added to database:", response);
+            //console.log("User added to database:", response);
             return response;
         }
         

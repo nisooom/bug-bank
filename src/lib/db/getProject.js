@@ -1,13 +1,14 @@
 "use server";
-import { client } from "../auth";
-import { Databases } from "appwrite";
+
+import { client, databases} from "@/lib/db/appwrite";
+
 import { Query } from "appwrite";
 
-const databases = new Databases(client);
 
-export async function getProjectsOfUser(email) {
+export async function getProjects({email}){
+
+
     try {
-        console.log(email);
         const response = await databases.listDocuments(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
             process.env.NEXT_PUBLIC_USER_COLLECTION_ID,
@@ -15,9 +16,9 @@ export async function getProjectsOfUser(email) {
                 Query.equal("user_email", email)
             ]
         );
-        
-        var projectIds = response.documents[0].projectIds.map(projectId => projectId["$id"]);
-        
+        var projectIds = response.documents[0].projects.map(projectId => projectId["$id"]);
+        // console.log(response.documents[0].projects);
+
         const projects = await Promise.all(projectIds.map(async projectId => {
             const project = await databases.getDocument(
                 process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
@@ -26,8 +27,9 @@ export async function getProjectsOfUser(email) {
             );
             return project;
         }));
-
-        return JSON.stringify(projects);
+        // console.log("Projects of user:");
+        // console.log(projects);
+        return projects;
 
     } catch (error) {
         console.error("Error fetching projects of user:", error);

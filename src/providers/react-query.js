@@ -24,12 +24,7 @@ export const ReactQueryClientProvider = ({ children }) => {
           },
         },
         // Add built-in error logger
-        logger: {
-          log: console.log,
-          warn: console.warn,
-          error:
-            process.env.NODE_ENV === "development" ? console.error : () => {},
-        },
+        
       }),
   );
 
