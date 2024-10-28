@@ -37,7 +37,7 @@ export const getBugById = async (bugId) => {
 }
 
 
-export const updateBug = async (bugId, data) => {
+export const updateBug = async ({bugId, data}) => {
     await databases.updateDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
         process.env.NEXT_PUBLIC_BUG_COLLECTION_ID,
@@ -83,7 +83,7 @@ export const getUsersAssigned = async (bugId) => {
 }
 
 
-export const assignUsers = async (bugId, userId) => {
+export const assignUsers = async ({bugId, userId}) => {
     const prevUsersAssigned = getUsersAssigned(bugId)
 
     await databases.updateDocument(
@@ -97,7 +97,7 @@ export const assignUsers = async (bugId, userId) => {
 }
 
 
-export const unassignUsers = async (bugId, userId) => {
+export const unassignUsers = async ({bugId, userId}) => {
     const prevUsersAssigned = getUsersAssigned(bugId)
 
     await databases.updateDocument(

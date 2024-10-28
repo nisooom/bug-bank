@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { PlusCircle, X } from "lucide-react";
 import { useState } from "react";
+import { addNewProject } from "@/lib/db/addNewProject";
 
 export const CreateProjectForm = ({ onSubmit }) => {
   const [projectName, setProjectName] = useState("");
@@ -19,9 +20,23 @@ export const CreateProjectForm = ({ onSubmit }) => {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    create_new_project(projectName, collaboratorEmails);
+    
+    if (!projectName || collaboratorEmails.length === 0) {
+      alert("Please provide a project name and at least one collaborator email.");
+      return;
+    }
+
+    console.log("Project Details:", projectName, collaboratorEmails);
+
+    // Call the function to add a new project
+    await addNewProject({ proj_name: projectName, collaborators_email: collaboratorEmails });
+    
+    // Reset form fields
+    setProjectName("");
+    setCollaboratorEmails([]);
+    setNewCollaboratorEmail("");
     setIsDialogOpen(false);
 
     const projectData = {
@@ -36,26 +51,27 @@ export const CreateProjectForm = ({ onSubmit }) => {
   const addCollaboratorEmail = () => {
     if (
       newCollaboratorEmail.trim() !== "" &&
-      isValidEmail(newCollaboratorEmail)
+      isValidEmail(newCollaboratorEmail) &&
+      !collaboratorEmails.includes(newCollaboratorEmail.trim())
     ) {
-      setCollaboratorEmails([
-        ...collaboratorEmails,
+      setCollaboratorEmails((prev) => [
+        ...prev,
         newCollaboratorEmail.trim(),
       ]);
       setNewCollaboratorEmail("");
+    } else {
+      alert("Please enter a valid email or avoid duplicates.");
     }
   };
 
   const removeCollaboratorEmail = (index) => {
-    const newEmails = [...collaboratorEmails];
-    newEmails.splice(index, 1);
-    setCollaboratorEmails(newEmails);
+    setCollaboratorEmails((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
     <Dialog
       open={isDialogOpen}
-      onOpenChange={(value) => setIsDialogOpen(value)}
+      onOpenChange={setIsDialogOpen}
     >
       <DialogTrigger className="border-black-500 flex aspect-square items-center justify-center rounded-md border-0 border-secondary">
         <PlusCircle className="text-white" />

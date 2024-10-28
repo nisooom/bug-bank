@@ -1,7 +1,7 @@
 "use server";
 
 import { ID } from "appwrite";
-import { databases } from "@/app/appwrite";
+import {databases} from "./appwrite";
 import { getUser } from "./getUser";
 import crypto from "crypto";
 
@@ -18,7 +18,7 @@ export async function addNewProject({proj_name, collaborators_email}) {
     // for each collaborator email, get the user document
     // and extract the user ID
     console.log(collaborators_email);
-    var collaboratorID = [];
+    let collaboratorID = [];
     await Promise.all(collaborators_email.map(async email => {
         const user = await getUser(email);
         console.log(user.documents[0].user_email);
@@ -27,7 +27,7 @@ export async function addNewProject({proj_name, collaborators_email}) {
 
     console.log(collaboratorID);
 
-    var project_info = {
+    let project_info = {
         name: proj_name,
         api_key: sha256Encrypt(proj_name+now.toString()),
         users: collaboratorID
