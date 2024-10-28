@@ -1,15 +1,12 @@
 "use client";
-import { checkLoggedIn } from "@/lib/auth";
-import Image from "next/image";
 import Link from "next/link";
+import { Loader } from "lucide-react";
 import React, { useContext } from "react";
-
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import Icon from "./icons/icon";
 import { AuthContext } from "@/context/auth";
+
 const Navbar = () => {
-  const { user, isAuthenticated, loading } = useContext(AuthContext);
-  const router = useRouter();
+  const { user, loading } = useContext(AuthContext);
 
   const initials =
     user && user.name
@@ -20,31 +17,18 @@ const Navbar = () => {
       : "";
 
   return (
-    // <div className="
-    // ">
-    //   {
-    //     loading?(<>Loading...</>):
-    //     user?(<>Sign out</>):(<>Signin</>)
-    //   }
-    // </div>
     <div className="text-accen15 absolute flex h-14 w-full items-center justify-between border-b-[1.5px] border-white/15 px-4">
       <Link
         href="/"
         type="button"
         className="flex h-auto items-center justify-center gap-1 rounded border-[1.5px] border-accent/15 px-2 py-1 text-lg font-semibold"
       >
-        {/* <Image
-          src="./gitknit.svg"
-          alt="logo"
-          width={48}
-          height={48}
-          className="aspect-square w-7"
-        /> */}
+        <Icon name="logo" className="h-6 w-6" />
         BugBank
       </Link>
       {loading ? (
-        <div className="flex items-center gap-2">
-          <span>Loading...</span>
+        <div className="flex -translate-x-1 items-center gap-2">
+          <Loader className="animate-spin" size={24} />
         </div>
       ) : user ? (
         <Link

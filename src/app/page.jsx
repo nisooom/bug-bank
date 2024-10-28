@@ -5,10 +5,10 @@ import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
 import React, { useEffect, useState } from "react";
 import { ProjectCard } from "@/components/dashboard-project-card";
 import { PlusCircle } from "lucide-react";
-import { CreateProjectForm } from "@/components/forms/new_project_form";
+import { CreateProjectForm } from "@/components/forms/project-form.jsx";
 
-import { create_new_user } from "./lib/appwrite_functions/user_functions/user_functions.js";
-import { CreateBugReportForm } from "@/components/forms/new_bug_report_form.jsx";
+// import { create_new_user } from "./lib/appwrite_functions/user_functions/user_functions.js";
+import { CreateBugReportForm } from "@/components/forms/bug-form.jsx";
 
 const Page = () => {
   const [projects, setProjects] = useState([]);
@@ -51,7 +51,7 @@ const Page = () => {
           <PriorityBugCard count={211} />
         </div>
 
-        <div className="flex items-center px-4 pt-6 text-2xl font-bold text-white">
+        <div className="flex items-center gap-2 px-4 pt-6 text-2xl font-bold text-white">
           Your Projects
           <CreateProjectForm onSubmit={(data) => console.log(data)} />
         </div>
