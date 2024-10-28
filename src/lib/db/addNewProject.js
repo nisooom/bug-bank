@@ -1,7 +1,7 @@
 "use server";
 
 import { ID } from "appwrite";
-import { databases } from "@/app/appwrite";
+import {databases} from "./appwrite";
 import { getUser } from "./getUser";
 import crypto from "crypto";
 
