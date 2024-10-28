@@ -20,7 +20,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex h-full items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8 rounded-xl border border-white/10 bg-white/10 p-8 shadow-2xl">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-foreground">
@@ -28,12 +28,9 @@ export default function SignUpPage() {
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Or{" "}
-            <a
-              href="/signin"
-              className="font-medium text-primary hover:text-primary/80"
-            >
+            <span className="font-medium text-primary">
               sign in to your existing account
-            </a>
+            </span>
           </p>
         </div>
 
