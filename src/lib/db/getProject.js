@@ -16,7 +16,7 @@ export async function getProjects({email}){
                 Query.equal("user_email", email)
             ]
         );
-        var projectIds = response.documents[0].projects.map(projectId => projectId["$id"]);
+        let projectIds = response.documents[0].projects.map(projectId => projectId["$id"]);
         // console.log(response.documents[0].projects);
 
         const projects = await Promise.all(projectIds.map(async projectId => {

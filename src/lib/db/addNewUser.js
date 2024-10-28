@@ -30,7 +30,7 @@ export async function addUserToDatabase(user) {
             //console.log("Trying to add new user");
             //console.log(ID.unique());
             //console.log(user);
-            var user_entry = {
+            let user_entry = {
                 username: name,
                 user_email: email,
             };
