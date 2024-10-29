@@ -30,42 +30,10 @@ const Page = () => {
   }
 
   return (
-    <div className="">
-      <LoginComponent 
-      name={user.name}
-      email={user.email}/>
+    <div className="h-full w-full">
+      <LoginComponent name={user.name} email={user.email} />
     </div>
   );
 };
 
 export default Page;
-
-// import React from 'react'
-// import { checkLoggedIn } from '@/lib/auth'
-// import { useEffect,useState } from 'react';
-
-// const page = () => {
-
-//  const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const data = await checkLoggedIn();
-//       setUser(data);
-//     };
-
-//     fetchData();
-//   }
-//   , []);
-
-//   return (
-//     <div>
-//         <h1>Account</h1>
-//         <div className="">
-//             {JSON.stringify(user)}
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default page

@@ -1,12 +1,21 @@
-
 import { ChevronDown } from "lucide-react";
 import { Code2 } from "lucide-react";
 import { useState } from "react";
 
-
 export const DeveloperSettings = ({ projectId, apiKey }) => {
   const [devOptExpanded, setDevOptExanded] = useState(false);
   const [secretToggle, setSecretToggle] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(apiKey)
+      .then(() => {
+        alert("API Key copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
 
   return (
     <div className="px-4">
@@ -28,34 +37,32 @@ export const DeveloperSettings = ({ projectId, apiKey }) => {
         </button>
         {devOptExpanded && (
           <div className="flex flex-col p-6">
-            <div className="flex">
-              <div className="w-4/12 pr-32 text-xl">PROJECT ID</div>
-              <button onClick={() => setSecretToggle(!secretToggle)}>
+            <div className="flex items-center">
+              <div className="w-4/12 pr-32 text-xl">API KEY</div>
+              <button onClick={handleCopy} className="flex h-14 items-center">
                 {secretToggle ? (
-                  <div className="text-xl">{projectId}</div>
+                  <div
+                    className="w-[300px] max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-xl"
+                    title={apiKey}
+                  >
+                    {apiKey}
+                  </div>
                 ) : (
-                  <div className="text-xl font-extrabold">
-                    ********************
+                  <div className="flex h-auto w-[300px] items-center justify-center text-2xl font-extrabold">
+                    * * * * * * * * * * * * * * * * * * * *
                   </div>
                 )}
               </button>
-            </div>
-            <hr className="my-2 opacity-20" />
-            <div className="flex">
-              <div className="w-4/12 pr-32 text-xl">API KEY</div>
-              <button onClick={() => setSecretToggle(!secretToggle)}>
-                {secretToggle ? (
-                  <div className="text-xl">{apiKey}</div>
-                ) : (
-                  <div className="text-xl font-extrabold">
-                    ********************
-                  </div>
-                )}
+              <button
+                onClick={() => setSecretToggle(!secretToggle)}
+                className="ml-4 text-sm text-blue-500"
+              >
+                {secretToggle ? "Hide" : "Show"}
               </button>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};

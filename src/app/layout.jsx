@@ -1,9 +1,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 // import "@uploadthing/react/styles.css";
-
+import { Toaster } from "@/components/ui/toaster";
 import NavbarWrapper from "@/components/navbar";
-import { ReactQueryClientProvider } from "@/providers/react-query";
 import { AuthProvider } from "@/providers/auth";
 
 const balooFont = localFont({
@@ -31,11 +30,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${balooFont.className} antialiased`}>
-        <ReactQueryClientProvider>
-          <AuthProvider>
-            <NavbarWrapper>{children}</NavbarWrapper>
-          </AuthProvider>
-        </ReactQueryClientProvider>
+        <AuthProvider>
+          <NavbarWrapper>
+            {children}
+            <Toaster />
+          </NavbarWrapper>
+        </AuthProvider>
       </body>
     </html>
   );
