@@ -60,11 +60,19 @@ const Page = () => {
             <span className="ml-4 text-xl">Loading projects...</span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {projects.map((project, index) => (
-              <ProjectCard key={index} project={project} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {projects &&
+                projects.map((project, index) => (
+                  <ProjectCard key={index} project={project} />
+                ))}
+            </div>
+            {projects.length === 0 && (
+              <div className="text-md w-full px-4 pb-8 text-accent/75">
+                You have no projects yet. Create one to get started.
+              </div>
+            )}
+          </>
         )}
 
         <div className="px-4">
