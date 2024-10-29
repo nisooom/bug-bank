@@ -44,7 +44,7 @@ export async function TalkWithLlama({ title, description }) {
       },
       body: JSON.stringify({ title, description }),
     });
-    console.log("response", response);
+    console.log("talk-with-llama response", response);
     return await response.json();
   } catch (error) {
     console.error("Error sending document to LLAMA:", error);

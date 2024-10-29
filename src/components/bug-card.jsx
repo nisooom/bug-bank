@@ -18,40 +18,43 @@ export const BugCard = ({ bug }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [AISummary, setAISummary] = useState("");
 
-  const handleLamma = async ({ title, description }) => {
-    setIsLoading(true);
-    try {
-      const response = await TalkWithLlama({
-        title,
-        description,
-      });
-      console.log("response", response);
-      setAISummary(response.response);
-      const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
-      const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
-      setAISummary(cleanedSummary2);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error sending document to LLAMA:", error);
-    }
-  };
+  const handleAi = async ({ title, description, local }) => {
+    const handleLlamma = async ({ title, description }) => {
+      try {
+        const response = await TalkWithLlama({
+          title,
+          description,
+        });
+        console.log("non local response", response);
+        setAISummary(response.response);
+        const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
+        const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
+        setAISummary(cleanedSummary2);
+      } catch (error) {
+        console.error("Error sending document to LLAMA:", error);
+      }
+    };
 
-  const handleLammaLocal = async ({ title, description }) => {
-    setIsLoading(true); // Set loading to true
-    try {
-      const message = `${title} ${description} this is my bug explain it very briefly in less than 40 words`;
-      const response = await TalkWithLlamaLocal({
-        content: message,
-      });
+    const handleLlammaLocal = async ({ title, description }) => {
+      try {
+        const message = `${title} ${description} this is my bug explain it very briefly in less than 40 words`;
+        const response = await TalkWithLlamaLocal({
+          content: message,
+        });
+  
+        console.log("local response", response);
+        setAISummary(response);
+      } catch (error) {
+        console.error("Error sending document to LLAMA:", error);
+      }
+    };
 
-      console.log("response", response);
-      setAISummary(response);
-    } catch (error) {
-      console.error("Error sending document to LLAMA:", error);
-    } finally {
-      setIsLoading(false); // Set loading to false after completion
-    }
-  };
+    setIsLoading(true)
+    const f = local ? handleLlammaLocal : handleLlamma
+    f({ title, description }).then(
+      setIsLoading(false)
+    )
+  }
 
   return (
     <Dialog>
@@ -92,17 +95,8 @@ export const BugCard = ({ bug }) => {
         <ItemCardCarousel items={bug.imageUrls} />
         <Button
           className="w-full rounded-md bg-accent text-white hover:bg-secondary"
-          onClick={
-            () =>
-              handleLamma({
-                title: bug.title,
-                description: bug.description,
-              })
-            // handleLammaLocal({
-            //   title: bug.title,
-            //   description: bug.description,
-            // })
-          }
+          // onClick={() => handleAi({ title: bug.title, description: bug.description, local: true })}
+          onClick={() => handleAi({ title: bug.title, description: bug.description, local: false })}
         >
           Ask AI
         </Button>
