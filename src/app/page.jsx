@@ -1,7 +1,7 @@
 "use client";
-import { ClosedBugCard } from "@/components/bug-cards/closed-bugs";
-import { OpenBugCard } from "@/components/bug-cards/opened-bugs";
-import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
+import { ClosedBugCard } from "@/components/bug-count-cards/closed-bugs";
+import { OpenBugCard } from "@/components/bug-count-cards/opened-bugs";
+import { PriorityBugCard } from "@/components/bug-count-cards/priority-bugs";
 import React, { useEffect, useState } from "react";
 import { ProjectCard } from "@/components/dashboard-project-card";
 import { PlusCircle } from "lucide-react";
