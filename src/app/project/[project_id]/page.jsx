@@ -74,8 +74,8 @@ export default function Page({ params }) {
         <div className="flex h-full w-full max-w-6xl flex-col gap-4 bg-red-400/0 py-4">
           <div className="flex h-72 w-full flex-col gap-2 bg-cyan-400/0 p-4 sm:h-28 sm:flex-row">
             <OpenBugCard count={data.bugsOpened} />
-            <ClosedBugCard count={data.bugsClosed} />
             <PriorityBugCard count={data.priorityBugs} />
+            <ClosedBugCard count={data.bugsClosed} />
           </div>
 
           <DeveloperSettings projectId={data.projectId} apiKey={data.apiKey} />
