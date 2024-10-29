@@ -43,6 +43,7 @@ export const getProject = async (projectId) => {
         );
         return project;
     } catch (error) {
-        console.error("Error fetching project:", error);
+        // console.error("Error fetching project:", error);
+        return null
     }
 }

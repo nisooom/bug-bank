@@ -5,7 +5,6 @@ import { PriorityBugCard } from "@/components/bug-cards/priority-bugs";
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Code2 } from "lucide-react";
-import { ArrowBigDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TalkWithLlamaLocal } from "@/actions/llama";
 import {
@@ -19,51 +18,54 @@ import {
 import { TalkWithLlama } from "@/actions/llama";
 import { ItemCardCarousel } from "@/components/item-card-carousel";
 import { Circle } from "lucide-react";
-import { GetDocumentAndSendToLlama } from "@/actions/llama";
-const getProject = (projectId) => {
-  const bugTitles = [
-    "Authorization not working",
-    "User unable to reset password",
-    "Dashboard loading slowly",
-    "API response time is high",
-    "Data not saving correctly",
-    "Mobile view issues",
-    "Email notifications not sent",
-    "Search functionality broken",
-    "Payment gateway errors",
-    "User profile not updating",
-  ];
+import { getProject } from "@/lib/db/getProject";
 
-  const bugDescriptions = [
-    "OAuth providers callback URLs not working using Supabase.",
-    "Users report that they cannot reset their passwords via email.",
-    "The dashboard takes too long to load on various devices.",
-    "API calls are taking longer than expected, affecting user experience.",
-    "User data fails to save intermittently, causing confusion.",
-    "The mobile view does not display correctly on certain devices.",
-    "Users are not receiving email notifications for important updates.",
-    "The search feature returns no results even for valid queries.",
-    "Errors occur when trying to process payments through the gateway.",
-    "Changes made to user profiles are not reflected in the app.",
-  ];
 
-  return {
-    title: `Project title {id: ${projectId}}`,
-    bugsOpened: 123,
-    bugsClosed: 1,
-    priorityBugs: 3121,
-    projectId: "project-id-lol",
-    apiKey: "secret-key-lol",
-    bugs: bugTitles.map((title, i) => ({
-      title,
-      description: bugDescriptions[i % bugDescriptions.length],
-      priority: i % 3 === 0 ? "Low" : i % 3 === 1 ? "Medium" : "High",
-    })),
-  };
-};
+// const getProject = (projectId) => {
+//   const bugTitles = [
+//     "Authorization not working",
+//     "User unable to reset password",
+//     "Dashboard loading slowly",
+//     "API response time is high",
+//     "Data not saving correctly",
+//     "Mobile view issues",
+//     "Email notifications not sent",
+//     "Search functionality broken",
+//     "Payment gateway errors",
+//     "User profile not updating",
+//   ];
+
+//   const bugDescriptions = [
+//     "OAuth providers callback URLs not working using Supabase.",
+//     "Users report that they cannot reset their passwords via email.",
+//     "The dashboard takes too long to load on various devices.",
+//     "API calls are taking longer than expected, affecting user experience.",
+//     "User data fails to save intermittently, causing confusion.",
+//     "The mobile view does not display correctly on certain devices.",
+//     "Users are not receiving email notifications for important updates.",
+//     "The search feature returns no results even for valid queries.",
+//     "Errors occur when trying to process payments through the gateway.",
+//     "Changes made to user profiles are not reflected in the app.",
+//   ];
+
+//   return {
+//     title: `Project title {id: ${projectId}}`,
+//     bugsOpened: 123,
+//     bugsClosed: 1,
+//     priorityBugs: 3121,
+//     projectId: "project-id-lol",
+//     apiKey: "secret-key-lol",
+//     bugs: bugTitles.map((title, i) => ({
+//       title,
+//       description: bugDescriptions[i % bugDescriptions.length],
+//       priority: i % 3 === 0 ? "Low" : i % 3 === 1 ? "Medium" : "High",
+//     })),
+//   };
+// };
 
 export default function Page({ params }) {
   const [data, setData] = useState(null);
+  const [projectExists, setProjectExists] = useState(false)
   const [isMounted, setMounted] = useState(false);
   const [devOptExpanded, setDevOptExanded] = useState(false);
   const [secretToggle, setSecretToggle] = useState(false);
@@ -72,10 +74,40 @@ export default function Page({ params }) {
   const [isLoading, setIsLoading] = useState(false);
   const [AISummary, setAISummary] = useState("");
 
-  const init = () => {
-    const project = getProject(params.project_id);
-    setData(project);
+  const init = async () => {
+    const project = await getProject(params.project_id)
+    if (project === null) {
+      setData({})
+      return
+    }
+
+    const bugs = project.bugs
+
+    const projectObject = {
+      exists: true,
+      title: project.name,
+      projectId: "secret-project-id",
+      apiKey: project.api_key,
+
+      bugs: bugs,
+      bugsOpened: bugs.reduce((total, bug) => total + (bug.status === "InProgress" ? 1 : 0), 0),
+      bugsClosed: bugs.reduce((total, bug) => total + (bug.status !== "InProgress" ? 1 : 0), 0),
+      priorityBugs: bugs.reduce((total, bug) => total + (bug.priority === "High" ? 1 : 0), 0),
+    }
+
+    setData(projectObject)
+    setProjectExists(true)
   };
+
+  useEffect(() => {
+    if (isMounted) {
+      init();
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLamma = async ({ title, description }) => {
     setIsLoading(true);
@@ -111,47 +143,31 @@ export default function Page({ params }) {
       setIsLoading(false); // Set loading to false after completion
     }
   };
-  useEffect(() => {
-    init();
-  }, []);
 
-  const filteredBugs = data?.bugs.filter((bug) =>
+  const filteredBugs = data?.bugs?.filter((bug) =>
     bug.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const priorityOrder = {
-    Low: 1,
-    Medium: 2,
-    High: 3,
-  };
-
   const sortedBugs = [...(filteredBugs || [])].sort((a, b) => {
+    const priorityMap = { Low: 1, Medium: 2, High: 3 };
     if (sortOrder === "high")
-      return priorityOrder[b.priority] - priorityOrder[a.priority];
-    if (sortOrder === "low")
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
-    return 0;
+      return priorityMap[b.priority] - priorityMap[a.priority];
+    else
+      return priorityMap[a.priority] - priorityMap[b.priority];
   });
-  useEffect(() => {
-    if (isMounted) {
-      init();
-    }
-  }, [isMounted]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return data === null ? (
     <div className="text-md p-8 text-accent/50">Loading...</div>
-  ) : (
+  ) : !projectExists ? (
+    <div className="">Project doesnt exist</div>
+  ): (
     <>
       <div className="flex h-full w-full items-center justify-center bg-green-400/0">
         <div className="flex h-full w-full max-w-6xl flex-col gap-4 bg-red-400/0 py-4">
           <div className="flex h-72 w-full flex-col gap-2 bg-cyan-400/0 p-4 sm:h-28 sm:flex-row">
-            <OpenBugCard count={249} />
-            <ClosedBugCard count={123} />
-            <PriorityBugCard count={211} />
+            <OpenBugCard count={data.bugsOpened} />
+            <ClosedBugCard count={data.bugsClosed} />
+            <PriorityBugCard count={data.priorityBugs} />
           </div>
 
           <div className="px-4">
@@ -224,9 +240,8 @@ export default function Page({ params }) {
               </div>
               <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {sortedBugs.map((bug, index) => (
-                  <Dialog>
+                  <Dialog key={index}>
                     <DialogTrigger
-                      key={index}
                       className="flex flex-col gap-2 rounded-md bg-background p-4 brightness-200"
                     >
                       <div className="w-min rounded-md bg-white/5">
