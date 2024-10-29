@@ -37,7 +37,7 @@ const Page = () => {
 
   useEffect(() => {
     if (authLoading) return;
-    setEmail(user.email);
+    setEmail(user?.email || "");
   }, [authLoading]);
 
   return (

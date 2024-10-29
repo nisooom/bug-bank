@@ -26,7 +26,7 @@ export const CreateProjectForm = ({ onSubmit }) => {
   useEffect(() => {
     if (loading) return;
     // console.log(user);
-    setEmail(user.email);
+    setEmail(user?.email || "");
   }, [loading]);
 
   useEffect(() => {
