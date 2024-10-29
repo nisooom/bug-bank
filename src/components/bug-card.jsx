@@ -89,13 +89,7 @@ export const BugCard = ({ bug }) => {
             {bug.description}
           </DialogDescription>
         </DialogHeader>
-        <ItemCardCarousel
-          items={new Array(3).fill(0).map((_, i) => ({
-            title: `Image ${i}`,
-            description: `Image description ${i}`,
-            imgSrc: `https://picsum.photos/seed/${i}/500/300`,
-          }))}
-        />
+        <ItemCardCarousel items={bug.imageUrls} />
         <Button
           className="w-full rounded-md bg-accent text-white hover:bg-secondary"
           onClick={

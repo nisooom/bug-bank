@@ -16,11 +16,7 @@ export const ItemCardCarousel = ({ items }) => {
                 key={index}
                 className="basis-1/2 pl-2 sm:basis-1/3 md:basis-1/4 md:pl-4 lg:basis-1/5"
               >
-                <ItemCard
-                  imgSrc={item.imgSrc}
-                  itemName={item.itemName}
-                  itemSold={item.itemSold}
-                />
+                <ItemCard imgSrc={item} />
               </CarouselItem>
             ))}
           </CarouselContent>
