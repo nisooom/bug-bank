@@ -3,18 +3,15 @@ import { ClosedBugCard } from "@/components/bug-count-cards/closed-bugs";
 import { OpenBugCard } from "@/components/bug-count-cards/opened-bugs";
 import { PriorityBugCard } from "@/components/bug-count-cards/priority-bugs";
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { Code2 } from "lucide-react";
 import { getProject } from "@/lib/db/getProject";
 import { BugCard } from "@/components/bug-card";
+import { DeveloperSettings } from "@/components/developer-settings";
 
 
 export default function Page({ params }) {
   const [data, setData] = useState(null);
   const [projectExists, setProjectExists] = useState(false)
   const [isMounted, setMounted] = useState(false);
-  const [devOptExpanded, setDevOptExanded] = useState(false);
-  const [secretToggle, setSecretToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("high");
 
@@ -81,54 +78,7 @@ export default function Page({ params }) {
             <PriorityBugCard count={data.priorityBugs} />
           </div>
 
-          <div className="px-4">
-            <div className="gap-2 rounded-md border border-white/10 bg-background p-2 brightness-150">
-              <button
-                className="w-full items-center px-4 text-sm"
-                onClick={() => setDevOptExanded(!devOptExpanded)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Code2 size={24} />
-                    <div className="px-4 text-2xl">Developer settings</div>
-                  </div>
-                  <ChevronDown
-                    size={24}
-                    className={`transition-transform duration-300 ${devOptExpanded ? "rotate-180" : ""}`}
-                  />
-                </div>
-              </button>
-              {devOptExpanded && (
-                <div className="flex flex-col p-6">
-                  <div className="flex">
-                    <div className="w-4/12 pr-32 text-xl">PROJECT ID</div>
-                    <button onClick={() => setSecretToggle(!secretToggle)}>
-                      {secretToggle ? (
-                        <div className="text-xl">{data.projectId}</div>
-                      ) : (
-                        <div className="text-xl font-extrabold">
-                          ********************
-                        </div>
-                      )}
-                    </button>
-                  </div>
-                  <hr className="my-2 opacity-20" />
-                  <div className="flex">
-                    <div className="w-4/12 pr-32 text-xl">API KEY</div>
-                    <button onClick={() => setSecretToggle(!secretToggle)}>
-                      {secretToggle ? (
-                        <div className="text-xl">{data.apiKey}</div>
-                      ) : (
-                        <div className="text-xl font-extrabold">
-                          ********************
-                        </div>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <DeveloperSettings projectId={data.projectId} apiKey={data.apiKey} />
 
           <div className="px-4">
             <div className="gap-2 rounded-lg bg-background">
