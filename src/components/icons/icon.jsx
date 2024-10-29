@@ -7,13 +7,7 @@ const Icon = (props) => (
     viewBox="0 0 600 600"
     {...props}
   >
-    <foreignObject
-      width="100%"
-      height="100%"
-      x={0}
-      y={0}
-      externalResourcesRequired="true"
-    >
+    <foreignObject width="100%" height="100%" x={0} y={0}>
       <div
         xmlns="http://www.w3.org/1999/xhtml"
         className="aspect-square w-screen max-w-full bg-transparent md:h-[350px] md:w-[350px] lg:h-[400px] lg:w-[400px] xl:h-[600px] xl:w-[600px]"

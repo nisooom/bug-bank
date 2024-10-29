@@ -13,13 +13,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [mounted, IsMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
   const handleLogout = async () => {
     await logout();
     setUser(null);
   };
+
   useEffect(() => {
-    IsMounted(true);
+    setMounted(true);
     const fetchUser = async () => {
       const user = await checkLoggedIn();
       if (user?.error) {
@@ -32,11 +34,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, [mounted]);
+  }, []);
 
-  if (user && !loading) {
-    addUser(user);
-  }
+  useEffect(() => {
+    if (user && !loading) {
+      addUser(user);
+    }
+  }, [user, loading]);
 
   return (
     <AuthContext.Provider

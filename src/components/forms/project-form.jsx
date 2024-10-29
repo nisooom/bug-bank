@@ -6,33 +6,52 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PlusCircle, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addNewProject } from "@/lib/db/addNewProject";
-
+import { useContext } from "react";
+import { AuthContext } from "@/context/auth";
 export const CreateProjectForm = ({ onSubmit }) => {
+  const { user, loading } = useContext(AuthContext);
   const [projectName, setProjectName] = useState("");
+  const [email, setEmail] = useState("");
   const [collaboratorEmails, setCollaboratorEmails] = useState([]);
   const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const [isMounted, setIsMounted] = useState(false);
   const isValidEmail = (email) => {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex.test(email);
   };
 
+  useEffect(() => {
+    if (loading) return;
+    // console.log(user);
+    setEmail(user.email);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!email) return;
+    setCollaboratorEmails((prev) => [...prev, email]);
+  }, [email]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!projectName || collaboratorEmails.length === 0) {
-      alert("Please provide a project name and at least one collaborator email.");
+      alert(
+        "Please provide a project name and at least one collaborator email.",
+      );
       return;
     }
 
     console.log("Project Details:", projectName, collaboratorEmails);
 
     // Call the function to add a new project
-    await addNewProject({ proj_name: projectName, collaborators_email: collaboratorEmails });
-    
+    await addNewProject({
+      proj_name: projectName,
+      collaborators_email: collaboratorEmails,
+    });
+
     // Reset form fields
     setProjectName("");
     setCollaboratorEmails([]);
@@ -54,10 +73,7 @@ export const CreateProjectForm = ({ onSubmit }) => {
       isValidEmail(newCollaboratorEmail) &&
       !collaboratorEmails.includes(newCollaboratorEmail.trim())
     ) {
-      setCollaboratorEmails((prev) => [
-        ...prev,
-        newCollaboratorEmail.trim(),
-      ]);
+      setCollaboratorEmails((prev) => [...prev, newCollaboratorEmail.trim()]);
       setNewCollaboratorEmail("");
     } else {
       alert("Please enter a valid email or avoid duplicates.");
@@ -69,10 +85,7 @@ export const CreateProjectForm = ({ onSubmit }) => {
   };
 
   return (
-    <Dialog
-      open={isDialogOpen}
-      onOpenChange={setIsDialogOpen}
-    >
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger className="border-black-500 flex aspect-square items-center justify-center rounded-md border-0 border-secondary">
         <PlusCircle className="text-white" />
       </DialogTrigger>

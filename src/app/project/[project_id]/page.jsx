@@ -7,22 +7,21 @@ import { getProject } from "@/lib/db/getProject";
 import { BugCard } from "@/components/bug-card";
 import { DeveloperSettings } from "@/components/developer-settings";
 
-
 export default function Page({ params }) {
   const [data, setData] = useState(null);
-  const [projectExists, setProjectExists] = useState(false)
+  const [projectExists, setProjectExists] = useState(false);
   const [isMounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("high");
 
   const init = async () => {
-    const project = await getProject(params.project_id)
+    const project = await getProject(params.project_id);
     if (project === null) {
-      setData({})
-      return
+      setData({});
+      return;
     }
 
-    const bugs = project.bugs
+    const bugs = project.bugs;
 
     const projectObject = {
       exists: true,
@@ -31,13 +30,24 @@ export default function Page({ params }) {
       apiKey: project.api_key,
 
       bugs: bugs,
-      bugsOpened: bugs.reduce((total, bug) => total + (bug.status === "InProgress" ? 1 : 0), 0),
-      bugsClosed: bugs.reduce((total, bug) => total + (bug.status !== "InProgress" ? 1 : 0), 0),
-      priorityBugs: bugs.reduce((total, bug) => total + ((bug.status === "InProgress" && bug.priority === "High") ? 1 : 0), 0),
-    }
+      bugsOpened: bugs.reduce(
+        (total, bug) => total + (bug.status === "InProgress" ? 1 : 0),
+        0,
+      ),
+      bugsClosed: bugs.reduce(
+        (total, bug) => total + (bug.status !== "InProgress" ? 1 : 0),
+        0,
+      ),
+      priorityBugs: bugs.reduce(
+        (total, bug) =>
+          total +
+          (bug.status === "InProgress" && bug.priority === "High" ? 1 : 0),
+        0,
+      ),
+    };
 
-    setData(projectObject)
-    setProjectExists(true)
+    setData(projectObject);
+    setProjectExists(true);
   };
 
   useEffect(() => {
@@ -51,24 +61,25 @@ export default function Page({ params }) {
   }, []);
 
   const filteredBugs = data?.bugs?.filter((bug) => {
-    const searchMatch = bug.title.toLowerCase().includes(searchTerm.toLowerCase())
-    const isNotResolved = bug.status !== "Resolved"
-    return searchMatch && isNotResolved
+    const searchMatch = bug.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const isNotResolved = bug.status !== "Resolved";
+    return searchMatch && isNotResolved;
   });
 
   const sortedBugs = [...(filteredBugs || [])].sort((a, b) => {
     const priorityMap = { Low: 1, Medium: 2, High: 3 };
     if (sortOrder === "high")
       return priorityMap[b.priority] - priorityMap[a.priority];
-    else
-      return priorityMap[a.priority] - priorityMap[b.priority];
+    else return priorityMap[a.priority] - priorityMap[b.priority];
   });
 
   return data === null ? (
     <div className="text-md p-8 text-accent/50">Loading...</div>
   ) : !projectExists ? (
     <div className="">Project doesnt exist</div>
-  ): (
+  ) : (
     <>
       <div className="flex h-full w-full items-center justify-center bg-green-400/0">
         <div className="flex h-full w-full max-w-6xl flex-col gap-4 bg-red-400/0 py-4">
@@ -100,7 +111,9 @@ export default function Page({ params }) {
                 </select>
               </div>
               <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {sortedBugs.map((bug, index) => <BugCard key={index} bug={bug} />)}
+                {sortedBugs.map((bug, index) => (
+                  <BugCard key={index} bug={bug} />
+                ))}
               </div>
             </div>
           </div>
