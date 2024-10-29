@@ -7,13 +7,14 @@ import { databases } from "./appwrite"
 // only these fields are used for creating a new bug report
 // all other fields are supposed to be updated using `updateBug`
 export const createNewBugReport = async ({
-    title, description, sensitivity, reporteeEmail,
+    title, description, sensitivity, priority, reporteeEmail,
     projectId,
 }) => {
     const report = {
         title,
         description,
-        sensitivity,
+        sensitivity: sensitivity ?? false,
+        priority: priority ?? "High",
         reporteeEmail: reporteeEmail ?? null,
         projectId,
     }
