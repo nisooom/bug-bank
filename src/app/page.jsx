@@ -41,7 +41,7 @@ const Page = () => {
   }, [authLoading]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-green-400/0">
+    <div className="flex h-full w-full items-center justify-center bg-[#0C1017]">
       <div className="h-full w-full max-w-6xl bg-red-400/0 py-4">
         <div className="flex h-72 w-full flex-col gap-2 bg-cyan-400/0 p-4 sm:h-28 sm:flex-row">
           <OpenBugCard count={249} />
@@ -76,7 +76,7 @@ const Page = () => {
         )}
 
         <div className="px-4">
-          <CreateBugReportForm onSubmit={(data) => console.log(data)} />
+          {/* <CreateBugReportForm onSubmit={(data) => console.log(data)} /> */}
         </div>
       </div>
     </div>

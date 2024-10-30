@@ -37,18 +37,18 @@ export const DeveloperSettings = ({ projectId, apiKey }) => {
         </button>
         {devOptExpanded && (
           <div className="flex flex-col p-6">
-            <div className="flex items-center">
-              <div className="w-4/12 pr-32 text-xl">API KEY</div>
+            <div className="flex items-center gap-4">
+              <div className="w-1/8 text-xl">API KEY</div>
               <button onClick={handleCopy} className="flex h-14 items-center">
                 {secretToggle ? (
                   <div
-                    className="w-[300px] max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-xl"
+                    className="w-full max-w-60 overflow-hidden text-ellipsis whitespace-nowrap text-xl"
                     title={apiKey}
                   >
                     {apiKey}
                   </div>
                 ) : (
-                  <div className="flex h-auto w-[300px] items-center justify-center text-2xl font-extrabold">
+                  <div className="flex h-auto w-full items-center justify-center text-2xl font-extrabold">
                     * * * * * * * * * * * * * * * * * * * *
                   </div>
                 )}

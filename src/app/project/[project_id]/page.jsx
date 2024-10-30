@@ -7,7 +7,8 @@ import { getProject } from "@/lib/db/getProject";
 import { BugCard } from "@/components/bug-card";
 import { DeveloperSettings } from "@/components/developer-settings";
 import { updateBug } from "@/lib/db/bug-queries";
-
+import { HelpCircle } from "lucide-react";
+import Link from "next/link";
 export default function Page({ params }) {
   const [data, setData] = useState(null);
   const [projectExists, setProjectExists] = useState(false);
@@ -69,26 +70,39 @@ export default function Page({ params }) {
     return searchMatch && isNotResolved;
   });
 
+  const resolvedBugs = data?.bugs?.filter((bug) => {
+    const searchMatch = bug.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const isNotResolved = bug.status !== "InProgress";
+    return searchMatch && isNotResolved;
+  });
+
   const sortedBugs = [...(filteredBugs || [])].sort((a, b) => {
-    const priorityMap = { Low: 1, Medium: 2, High: 3, Unassigned: 4*(sortOrder === 'high') };
+    const priorityMap = {
+      Low: 1,
+      Medium: 2,
+      High: 3,
+      Unassigned: 4 * (sortOrder === "high"),
+    };
     if (sortOrder === "high")
       return priorityMap[b.priority] - priorityMap[a.priority];
     else return priorityMap[a.priority] - priorityMap[b.priority];
   });
 
   const priorityChanged = (bug, priority) => {
-    console.log(bug, priority)
-    bug.priority = priority
-    setData({...data})
-    updateBug({bugId: bug.$id, data: {priority}})
-  }
+    console.log(bug, priority);
+    bug.priority = priority;
+    setData({ ...data });
+    updateBug({ bugId: bug.$id, data: { priority } });
+  };
 
   const statusChanged = (bug, status) => {
-    console.log(bug, status)
-    bug.status = status
-    setData({...data})
-    updateBug({bugId: bug.$id, data: {status}})
-  }
+    console.log(bug, status);
+    bug.status = status;
+    setData({ ...data });
+    updateBug({ bugId: bug.$id, data: { status } });
+  };
 
   return data === null ? (
     <div className="text-md p-8 text-accent/50">Loading...</div>
@@ -125,16 +139,61 @@ export default function Page({ params }) {
                   <option value="high">Priority High</option>
                 </select>
               </div>
-              <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {sortedBugs.map((bug, index) => (
-                  <BugCard
-                    key={index}
-                    bug={bug}
-                    priorityChanged={(priority) => priorityChanged(bug, priority)}
-                    statusChanged={(status) => statusChanged(bug, status)}
-                  />
-                ))}
-              </div>
+              <section className="flex flex-col rounded-lg bg-background py-4">
+                <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {sortedBugs.map((bug, index) => (
+                    <BugCard
+                      key={index}
+                      bug={bug}
+                      priorityChanged={(priority) =>
+                        priorityChanged(bug, priority)
+                      }
+                      statusChanged={(status) => statusChanged(bug, status)}
+                    />
+                  ))}
+                </div>
+              </section>
+
+              {sortedBugs.length === 0 && (
+                <div className="flex w-full flex-col gap-2 rounded border border-white/15 p-4 px-4">
+                  <span className="flex items-center gap-2 text-xl font-bold text-accent/75">
+                    <HelpCircle className="h-full w-6" />
+                    Dont know where to Start?
+                  </span>
+
+                  <span className="text-md py-2">
+                    Take a look at our
+                    <Link
+                      href="/docs"
+                      className="px-1 text-accent/75 underline"
+                    >
+                      Quick Start
+                    </Link>
+                    Guide to get started
+                  </span>
+                </div>
+              )}
+
+              {resolvedBugs.length > 0 && (
+                <section className="flex flex-col rounded-lg bg-background py-4">
+                  <hr className="border-t-1 border-white/10 py-2" />
+                  <h1 className="text-left text-2xl font-bold text-accent/50">
+                    Resolved Bugs
+                  </h1>
+                  <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {resolvedBugs.map((bug, index) => (
+                      <BugCard
+                        key={index}
+                        bug={bug}
+                        priorityChanged={(priority) =>
+                          priorityChanged(bug, priority)
+                        }
+                        statusChanged={(status) => statusChanged(bug, status)}
+                      />
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
         </div>
