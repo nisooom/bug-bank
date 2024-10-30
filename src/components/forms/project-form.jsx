@@ -10,14 +10,15 @@ import { useEffect, useState } from "react";
 import { addNewProject } from "@/lib/db/addNewProject";
 import { useContext } from "react";
 import { AuthContext } from "@/context/auth";
-export const CreateProjectForm = ({ onSubmit }) => {
+
+
+export const CreateProjectForm = ({ ownerProjectIds, onSubmit }) => {
   const { user, loading } = useContext(AuthContext);
   const [projectName, setProjectName] = useState("");
   const [email, setEmail] = useState("");
   const [collaboratorEmails, setCollaboratorEmails] = useState([]);
   const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const isValidEmail = (email) => {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex.test(email);
@@ -44,10 +45,10 @@ export const CreateProjectForm = ({ onSubmit }) => {
       return;
     }
 
-    console.log("Project Details:", projectName, collaboratorEmails);
-
     // Call the function to add a new project
     await addNewProject({
+      ownerEmail: user.email,
+      ownerProjectIds,
       proj_name: projectName,
       collaborators_email: collaboratorEmails,
     });

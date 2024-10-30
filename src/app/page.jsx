@@ -51,7 +51,7 @@ const Page = () => {
 
         <div className="flex items-center gap-2 px-4 pt-6 text-2xl font-bold text-white">
           Your Projects
-          <CreateProjectForm onSubmit={(data) => fetchProjects()} />
+          <CreateProjectForm ownerProjectIds={projects.map((project) => project.$id)} onSubmit={(data) => fetchProjects()} />
         </div>
 
         {loading ? (

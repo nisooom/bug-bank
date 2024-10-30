@@ -13,31 +13,45 @@ function sha256Encrypt(text) {
 const now = new Date();
 
 
-export async function addNewProject({proj_name, collaborators_email}) {
+export async function addNewProject({
+    ownerEmail, ownerProjectIds,
+    proj_name, collaborators_email
+}) {
+    const owner = await getUser(ownerEmail)
+    const ownerId = owner.documents[0].$id
 
     // for each collaborator email, get the user document
     // and extract the user ID
-    console.log(collaborators_email);
-    let collaboratorID = [];
+    let collaboratorIDs = [];
     await Promise.all(collaborators_email.map(async email => {
         const user = await getUser(email);
         if (user.documents.length) {
-            collaboratorID.push(user.documents[0].$id);
+            collaboratorIDs.push(user.documents[0].$id);
         }
     }));
 
-    console.log(collaboratorID);
-
-    let project_info = {
+    const projectObj = {
         name: proj_name,
         api_key: sha256Encrypt(proj_name+now.toString()),
-        users: collaboratorID
+        users: collaboratorIDs
     };
 
+    const newId = ID.unique()
     await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROJECT_COLLECTION_ID,
-        ID.unique(),
-        project_info
+        newId,
+        projectObj
     );
+
+    await databases.updateDocument(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+        process.env.NEXT_PUBLIC_USER_COLLECTION_ID,
+        ownerId,
+        {
+            projects: [...ownerProjectIds, newId]
+        }
+    )
+
+    console.log("PROJECT NEW:", newId, projectObj)
 }
