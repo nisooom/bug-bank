@@ -37,9 +37,9 @@ export async function POST(req) {
     );
   }
 
-  const apiKeyExists = await getProjectByAPIKey(secretKey);
+  const projectId = await getProjectByAPIKey(secretKey)
 
-  if (!apiKeyExists) {
+  if (!projectId) {
     return NextResponse.json(
       {
         success: false,
@@ -51,7 +51,6 @@ export async function POST(req) {
       },
     );
   }
-  const projectID = apiKeyExists.$id;
 
   try {
     // Log incoming request
@@ -85,7 +84,7 @@ export async function POST(req) {
       description: data.description,
       reporteeEmail: data.reporteeEmail,
       imageUrls: data.images || null,
-      projectId: projectID,
+      projectId,
     });
 
     console.log("Bug report created successfully:", result);
