@@ -1,8 +1,9 @@
 import { ChevronDown } from "lucide-react";
+import { X } from "lucide-react";
 import { Code2 } from "lucide-react";
 import { useState } from "react";
 
-export const DeveloperSettings = ({ projectId, apiKey }) => {
+export const DeveloperSettings = ({ apiKey, collaborators, addCollaborator, removeCollaborator }) => {
   const [devOptExpanded, setDevOptExanded] = useState(false);
   const [secretToggle, setSecretToggle] = useState(false);
 
@@ -60,9 +61,32 @@ export const DeveloperSettings = ({ projectId, apiKey }) => {
                 {secretToggle ? "Hide" : "Show"}
               </button>
             </div>
+            <hr className="opacity-20 py-2" />
+            <div className="flex">
+              <div className="text-xl pr-2">Collaborators</div>
+              <div className="flex flex-wrap gap-2">
+                {
+                  collaborators.map((user, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between rounded-md bg-gray-700 px-2 py-1"
+                    >
+                      <span className="text-white">{user.user_email}</span>
+                      <button
+                        type="button"
+                        className="text-white hover:text-red-500"
+                        onClick={() => removeCollaborator(user.user_email)}
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}

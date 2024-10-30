@@ -2,13 +2,16 @@
 import { ClosedBugCard } from "@/components/bug-count-cards/closed-bugs";
 import { OpenBugCard } from "@/components/bug-count-cards/opened-bugs";
 import { PriorityBugCard } from "@/components/bug-count-cards/priority-bugs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getProject } from "@/lib/db/getProject";
 import { BugCard } from "@/components/bug-card";
 import { DeveloperSettings } from "@/components/developer-settings";
 import { updateBug } from "@/lib/db/bug-queries";
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
+import { getUser } from "@/lib/db/getUser";
+import { setProjectCollaborators } from "@/lib/db/projectCollaborators";
+import { AuthContext } from "@/context/auth";
 
 
 export default function Page({ params }) {
@@ -17,6 +20,7 @@ export default function Page({ params }) {
   const [isMounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("high");
+  const { user } = useContext(AuthContext)
 
   const init = async () => {
     const project = await getProject(params.project_id);
@@ -28,10 +32,11 @@ export default function Page({ params }) {
     const bugs = project.bugs;
 
     const projectObject = {
-      exists: true,
+      id: project.$id,
       title: project.name,
       projectId: "secret-project-id",
       apiKey: project.api_key,
+      users: project.users,
 
       bugs: bugs,
       bugsOpened: bugs.reduce(
@@ -93,18 +98,39 @@ export default function Page({ params }) {
   });
 
   const priorityChanged = (bug, priority) => {
-    console.log(bug, priority);
     bug.priority = priority;
     setData({ ...data });
     updateBug({ bugId: bug.$id, data: { priority } });
   };
 
   const statusChanged = (bug, status) => {
-    console.log(bug, status);
     bug.status = status;
     setData({ ...data });
     updateBug({ bugId: bug.$id, data: { status } });
   };
+
+  const addCollaborator = async (email) => {
+    if (data.users.filter(user => user.user_email === email).length) {
+      return
+    }
+
+    const newUser = await getUser(email)
+    if (newUser !== null) {
+      setProjectCollaborators({ projectId: data.id, collaboratorsIds: [...data.users.map(user => user.$id), newUser.$id] })
+      setData({ ...data, users: [...data.users, newUser] });
+    } else {
+      alert(`No user with email ${email} found`);
+    }
+  };
+
+  const removeCollaborator = async (email) => {
+    if (email === user.user_email) {
+      return
+    }
+
+    setProjectCollaborators({ projectId: data.id, collaboratorsIds: data.users.filter(user => user.user_email !== email).map(user => user.$id) })
+    setData({ ...data, users: data.users.filter(user => user.user_email !== email) });
+  }
 
   return data === null ? (
     <div className="text-md p-8 text-accent/50">Loading...</div>
@@ -120,7 +146,7 @@ export default function Page({ params }) {
             <ClosedBugCard count={data.bugsClosed} />
           </div>
 
-          <DeveloperSettings projectId={data.projectId} apiKey={data.apiKey} />
+          <DeveloperSettings apiKey={data.apiKey} collaborators={data.users} addCollaborator={addCollaborator} removeCollaborator={removeCollaborator} />
 
           <div className="px-4">
             <div className="gap-2 rounded-lg bg-background">
