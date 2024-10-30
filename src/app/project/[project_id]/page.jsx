@@ -104,6 +104,14 @@ export default function Page({ params }) {
   };
 
   const statusChanged = (bug, status) => {
+    if (bug.status === "InProgress")
+      data.bugsOpened -= 1
+    else
+      data.bugsClosed -= 1
+    if (status === "InProgress")
+      data.bugsOpened += 1
+    else
+      data.bugsClosed += 1
     bug.status = status;
     setData({ ...data });
     updateBug({ bugId: bug.$id, data: { status } });
