@@ -66,7 +66,7 @@ export const BugCard = ({ bug }) => {
             <Circle
               size={12}
               className="rounded-full border-0 stroke-none"
-              fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`}
+              fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : bug.priority === "Low" ? "lime" : "grey"}`}
             />
             {bug.priority}
           </div>
@@ -84,7 +84,7 @@ export const BugCard = ({ bug }) => {
             <Circle
               size={12}
               className="rounded-full border-0 stroke-none"
-              fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : "lime"}`}
+              fill={`${bug.priority === "High" ? "red" : bug.priority === "Medium" ? "orange" : bug.priority === "Low" ? "lime" : "grey"}`}
             />
             {bug.title}
           </DialogTitle>
