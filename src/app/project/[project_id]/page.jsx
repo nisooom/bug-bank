@@ -114,7 +114,7 @@ export default function Page({ params }) {
       return
     }
 
-    const newUser = await getUser(email)
+    const newUser = (await getUser(email)).documents[0] ?? null
     if (newUser !== null) {
       setProjectCollaborators({ projectId: data.id, collaboratorsIds: [...data.users.map(user => user.$id), newUser.$id] })
       setData({ ...data, users: [...data.users, newUser] });

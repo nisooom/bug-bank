@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import { X } from "lucide-react";
 import { Code2 } from "lucide-react";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useState } from "react";
 export const DeveloperSettings = ({ apiKey, collaborators, addCollaborator, removeCollaborator }) => {
   const [devOptExpanded, setDevOptExanded] = useState(false);
   const [secretToggle, setSecretToggle] = useState(false);
+  const [collaboratorEmail, setCollaboratorEmail] = useState("");
 
   const handleCopy = () => {
     navigator.clipboard
@@ -83,6 +85,17 @@ export const DeveloperSettings = ({ apiKey, collaborators, addCollaborator, remo
                   ))
                 }
               </div>
+            </div>
+            <div className="flex py-2">
+              <input
+                className="w-56 rounded-md bg-gray-700 px-2 py-1 text-white"
+                type="email"
+                placeholder="Email"
+                value={collaboratorEmail} onChange={(e) => setCollaboratorEmail(e.target.value)}
+              />
+              <button onClick={() => {addCollaborator(collaboratorEmail); setCollaboratorEmail("")}} >
+                <Plus size={16} className="text-white" />
+              </button>
             </div>
           </div>
         )}
