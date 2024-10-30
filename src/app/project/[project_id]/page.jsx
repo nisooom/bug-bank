@@ -124,7 +124,7 @@ export default function Page({ params }) {
   };
 
   const removeCollaborator = async (email) => {
-    if (email === user.user_email) {
+    if (email === user.email) {
       return
     }
 
