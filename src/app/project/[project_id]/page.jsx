@@ -9,6 +9,8 @@ import { DeveloperSettings } from "@/components/developer-settings";
 import { updateBug } from "@/lib/db/bug-queries";
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
+
+
 export default function Page({ params }) {
   const [data, setData] = useState(null);
   const [projectExists, setProjectExists] = useState(false);
@@ -131,7 +133,7 @@ export default function Page({ params }) {
                   className="w-full rounded-sm bg-background px-2 py-1 text-lg brightness-150"
                 />
                 <select
-                  className="px-0text-lg rounded-sm bg-secondary"
+                  className="text-lg rounded-sm bg-secondary"
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
                 >
@@ -140,7 +142,7 @@ export default function Page({ params }) {
                 </select>
               </div>
               <section className="flex flex-col rounded-lg bg-background py-4">
-                <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {sortedBugs.map((bug, index) => (
                     <BugCard
                       key={index}
