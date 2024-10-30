@@ -75,6 +75,17 @@ export default function Page({ params }) {
     else return priorityMap[a.priority] - priorityMap[b.priority];
   });
 
+  const priorityChanged = (bug, priority) => {
+    console.log(bug, priority)
+    bug.priority = priority
+    setData({...data})
+  }
+  const statusChanged = (bug, status) => {
+    console.log(bug, status)
+    bug.status = status
+    setData({...data})
+  }
+
   return data === null ? (
     <div className="text-md p-8 text-accent/50">Loading...</div>
   ) : !projectExists ? (
@@ -112,7 +123,12 @@ export default function Page({ params }) {
               </div>
               <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {sortedBugs.map((bug, index) => (
-                  <BugCard key={index} bug={bug} />
+                  <BugCard
+                    key={index}
+                    bug={bug}
+                    priorityChanged={(priority) => priorityChanged(bug, priority)}
+                    statusChanged={(status) => statusChanged(bug, status)}
+                  />
                 ))}
               </div>
             </div>
