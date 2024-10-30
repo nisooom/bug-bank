@@ -178,7 +178,7 @@ const EditBugDialogContent = ({
   );
 };
 
-export const BugCard = ({ bug, priorityChanged, statusChanged }) => {
+export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [AISummary, setAISummary] = useState("");
   const [isEditing, setEditing] = useState(false);
@@ -227,7 +227,7 @@ export const BugCard = ({ bug, priorityChanged, statusChanged }) => {
   return (
     <Dialog>
       <DialogTrigger className="flex flex-col gap-2 rounded-md bg-background p-4 brightness-200">
-        <div className="w-min rounded-md bg-white/5">
+        <div className="flex rounded-md bg-white/5 gap-12">
           <div className="flex items-center justify-center gap-1 px-2 py-1">
             <Circle
               size={12}
@@ -236,6 +236,13 @@ export const BugCard = ({ bug, priorityChanged, statusChanged }) => {
             />
             {bug.priority}
           </div>
+          {
+            showStatus && (
+              <div className="items-center justify-center px-2 py-1">
+                {bug.status}
+              </div>
+            )
+          }
         </div>
         <div>
           <div className="text-left text-xl">{bug.title}</div>

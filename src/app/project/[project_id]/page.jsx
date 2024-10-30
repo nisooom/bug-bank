@@ -187,6 +187,7 @@ export default function Page({ params }) {
                       <BugCard
                         key={index}
                         bug={bug}
+                        showStatus={true}
                         priorityChanged={(priority) =>
                           priorityChanged(bug, priority)
                         }
