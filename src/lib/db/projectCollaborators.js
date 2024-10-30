@@ -12,4 +12,6 @@ export const setProjectCollaborators = async ({ projectId, collaboratorsIds }) =
             users: collaboratorsIds,
         },
     );
+
+    console.log("PROJECT COLLABORATORS:", projectId, collaboratorsIds)
 }

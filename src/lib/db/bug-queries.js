@@ -20,21 +20,15 @@ export const createNewBugReport = async ({
     projectId,
   };
 
+  const newId = ID.unique()
   await databases.createDocument(
     process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
     process.env.NEXT_PUBLIC_BUG_COLLECTION_ID,
-    ID.unique(),
+    newId,
     report,
   );
-};
 
-export const getBugById = async (bugId) => {
-  const doc = await databases.getDocument(
-    process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-    process.env.NEXT_PUBLIC_BUG_COLLECTION_ID,
-    bugId,
-  );
-  return doc;
+  console.log("BUG CREATE:", newId, JSON.stringify(report))
 };
 
 export const updateBug = async ({ bugId, data }) => {
@@ -44,26 +38,11 @@ export const updateBug = async ({ bugId, data }) => {
     bugId,
     data,
   );
+
+  console.log("BUG UPDATE:", bugId, JSON.stringify(data))
 };
 
-// just mark it as resolved instead
-export const deleteBug = async (bugId) => {
-  await databases.deleteDocument(
-    process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-    process.env.NEXT_PUBLIC_BUG_COLLECTION_ID,
-    bugId,
-  );
-};
-
-export const getBugsByProjectId = async (projectId) => {
-  const docs = await databases.listDocuments(
-    process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-    process.env.NEXT_PUBLIC_BUG_COLLECTION_ID,
-    [Query.equal("projectId", projectId)],
-  );
-  return docs;
-};
-
+/* UNTESTED FUNCTION */
 export const getUsersAssigned = async (bugId) => {
   const doc = await databases.getDocument(
     process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
@@ -75,6 +54,7 @@ export const getUsersAssigned = async (bugId) => {
   return doc.usersAssigned;
 };
 
+/* UNTESTED FUNCTION */
 export const assignUsers = async ({ bugId, userId }) => {
   const prevUsersAssigned = getUsersAssigned(bugId);
 
@@ -88,6 +68,7 @@ export const assignUsers = async ({ bugId, userId }) => {
   );
 };
 
+/* UNTESTED FUNCTION */
 export const unassignUsers = async ({ bugId, userId }) => {
   const prevUsersAssigned = getUsersAssigned(bugId);
 
