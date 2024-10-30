@@ -14,5 +14,6 @@ export async function getUser(email){
         return response;
     } catch (error) {
         console.error("Error fetching user:", error);
+        return null;
     }
 }
