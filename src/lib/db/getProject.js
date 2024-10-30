@@ -26,7 +26,7 @@ export async function getProjects({ email }) {
       }),
     );
 
-    console.log("PROJECT GET (USER-EMAIL):", email, projects.map(project => `${project.$id} : ${project.name} : ${project.users.map(user => user.user_email)}`).join(' | '))
+    console.log("PROJECT GET (USER-EMAIL):", email, projects.map(project => `${project.$id} : ${project.name} : ${project.users.map(user => user.user_email)}`))
     return projects;
   } catch (error) {
     console.error("Error fetching projects of user:", error);
@@ -41,7 +41,7 @@ export const getProject = async (projectId) => {
       projectId,
     );
 
-    console.log("PROJECT GET (PROJ-ID):", projectId, `${project.$id} : ${project.name} : ${project.users.map(user => user.user_email)}`)
+    console.log("PROJECT GET (PROJ-ID):", `${project.$id} : ${project.name} : ${project.users.map(user => user.user_email)}`)
     return project;
   } catch (error) {
     // console.error("Error fetching project:", error);
