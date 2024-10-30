@@ -21,7 +21,7 @@ export async function addNewProject({proj_name, collaborators_email}) {
     let collaboratorID = [];
     await Promise.all(collaborators_email.map(async email => {
         const user = await getUser(email);
-        if (user !== null) {
+        if (user.documents.length) {
             collaboratorID.push(user.documents[0].$id);
         }
     }));
