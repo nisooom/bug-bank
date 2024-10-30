@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getProject } from "@/lib/db/getProject";
 import { BugCard } from "@/components/bug-card";
 import { DeveloperSettings } from "@/components/developer-settings";
+import { updateBug } from "@/lib/db/bug-queries";
 
 export default function Page({ params }) {
   const [data, setData] = useState(null);
@@ -79,11 +80,14 @@ export default function Page({ params }) {
     console.log(bug, priority)
     bug.priority = priority
     setData({...data})
+    updateBug({bugId: bug.$id, data: {priority}})
   }
+
   const statusChanged = (bug, status) => {
     console.log(bug, status)
     bug.status = status
     setData({...data})
+    updateBug({bugId: bug.$id, data: {status}})
   }
 
   return data === null ? (
