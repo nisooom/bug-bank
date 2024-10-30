@@ -64,12 +64,12 @@ export default function Page({ params }) {
     const searchMatch = bug.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const isNotResolved = bug.status !== "Resolved";
+    const isNotResolved = bug.status === "InProgress";
     return searchMatch && isNotResolved;
   });
 
   const sortedBugs = [...(filteredBugs || [])].sort((a, b) => {
-    const priorityMap = { Low: 1, Medium: 2, High: 3 };
+    const priorityMap = { Low: 1, Medium: 2, High: 3, Unassigned: 4*(sortOrder === 'high') };
     if (sortOrder === "high")
       return priorityMap[b.priority] - priorityMap[a.priority];
     else return priorityMap[a.priority] - priorityMap[b.priority];
