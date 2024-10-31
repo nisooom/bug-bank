@@ -216,8 +216,7 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
     };
 
     setIsLoading(true);
-    const f = local ? handleLlammaLocal : handleLlamma;
-    f({ title, description }).then(setIsLoading(false));
+    handleLlamma({ title, description }).then(setIsLoading(false));
   };
 
   const priorityChangedHandler = (newPriority) => {
