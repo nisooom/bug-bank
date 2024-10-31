@@ -98,6 +98,11 @@ export default function Page({ params }) {
   });
 
   const priorityChanged = (bug, priority) => {
+    if (bug.priority === "High")
+      data.priorityBugs -= 1
+    if (priority === "High")
+      data.priorityBugs += 1
+
     bug.priority = priority;
     setData({ ...data });
     updateBug({ bugId: bug.$id, data: { priority } });
