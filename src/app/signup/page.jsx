@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { loginWithGoogle } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const searchParams = useSearchParams();
 
   const handleGoogleSignUp = async () => {
     try {
