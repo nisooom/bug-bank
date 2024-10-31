@@ -191,11 +191,11 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
           title,
           description,
         });
-        console.log("non local response", response);
+        console.log("non local response", response.response);
         setAISummary(response.response);
         const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
         const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
-        setAISummary(cleanedSummary2);
+        setAISummary(response);
       } catch (error) {
         console.error("Error sending document to LLAMA:", error);
       }
