@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState(null);
 

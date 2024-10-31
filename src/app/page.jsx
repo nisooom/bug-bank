@@ -72,7 +72,7 @@ const Page = () => {
             You are not logged in.
           </div>
           <a
-            href="/api/auth/login"
+            href="/signup"
             className="flex items-center gap-2 rounded-lg bg-orange-400 px-4 py-2 text-lg font-bold text-white"
           >
             <PlusCircle size={24} />
