@@ -4,7 +4,7 @@ import { createNewBugReport } from "@/lib/db/bug-queries";
 import { getProjectByAPIKey } from "@/lib/db/getProject";
 // Enable CORS for specific origin
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "http://localhost:3001",
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, X-Secret-Key",
 };
@@ -37,7 +37,7 @@ export async function POST(req) {
     );
   }
 
-  const projectId = await getProjectByAPIKey(secretKey)
+  const projectId = await getProjectByAPIKey(secretKey);
 
   if (!projectId) {
     return NextResponse.json(
