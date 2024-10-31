@@ -192,10 +192,9 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
           description,
         });
         console.log("non local response", response.response);
-        setAISummary(response.response);
-        const cleanedSummary = AISummary.response.replace(/[\n]/g, " ");
+        const cleanedSummary = response.response.replace(/[\n]/g, " ");
         const cleanedSummary2 = cleanedSummary.replace(/[*]/g, "");
-        setAISummary(response);
+        setAISummary(cleanedSummary2);
       } catch (error) {
         console.error("Error sending document to LLAMA:", error);
       }
@@ -265,6 +264,7 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
             isLoading={isLoading}
             priorityChanged={priorityChangedHandler}
             statusChanged={statusChangedHandler}
+            AISummary={AISummary}
           />
         ) : (
           <ViewBugDialogContent
@@ -272,6 +272,7 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
             setEditing={setEditing}
             handleAi={handleAi}
             isLoading={isLoading}
+            AISummary={AISummary}
           />
         )}
       </DialogContent>
