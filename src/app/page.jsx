@@ -40,6 +40,33 @@ const Page = () => {
     setEmail(user?.email || "");
   }, [authLoading]);
 
+  if (authLoading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-[#0C1017]">
+        <Loader className="animate-spin" size={48} />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-[#0C1017]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="text-2xl font-bold text-white">
+            You are not logged in.
+          </div>
+          <a
+            href="/api/auth/login"
+            className="flex items-center gap-2 rounded-lg bg-orange-400 px-4 py-2 text-lg font-bold text-white"
+          >
+            <PlusCircle size={24} />
+            Log in
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full w-full items-center justify-center bg-[#0C1017]">
       <div className="h-full w-full max-w-6xl bg-red-400/0 py-4">
@@ -51,7 +78,10 @@ const Page = () => {
 
         <div className="flex items-center gap-2 px-4 pt-6 text-2xl font-bold text-white">
           Your Projects
-          <CreateProjectForm ownerProjectIds={projects.map((project) => project.$id)} onSubmit={(data) => fetchProjects()} />
+          <CreateProjectForm
+            ownerProjectIds={projects.map((project) => project.$id)}
+            onSubmit={(data) => fetchProjects()}
+          />
         </div>
 
         {loading ? (
