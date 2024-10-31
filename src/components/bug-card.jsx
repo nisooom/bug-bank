@@ -182,6 +182,7 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
   const [isLoading, setIsLoading] = useState(false);
   const [AISummary, setAISummary] = useState("");
   const [isEditing, setEditing] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false)
 
   const handleAi = async ({ title, description, local }) => {
     const handleLlamma = async ({ title, description }) => {
@@ -219,13 +220,18 @@ export const BugCard = ({ bug, showStatus, priorityChanged, statusChanged }) => 
     f({ title, description }).then(setIsLoading(false));
   };
 
-  const priorityChangedHandler = (newPriority) =>
+  const priorityChangedHandler = (newPriority) => {
     bug.priority !== newPriority && priorityChanged(newPriority);
-  const statusChangedHandler = (newStatus) =>
+    setDialogOpen(false)
+  }
+  
+  const statusChangedHandler = (newStatus) => {
     bug.status !== newStatus && statusChanged(newStatus);
+    setDialogOpen(false)
+  }
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger className="flex flex-col gap-2 rounded-md bg-background p-4 brightness-200">
         <div className="flex rounded-md bg-white/5 gap-12">
           <div className="flex items-center justify-center gap-1 px-2 py-1">
